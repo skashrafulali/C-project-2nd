@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Application_Form.Designer.cs">
+      <DependentUpon>Application_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Client\Billings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -63,12 +69,6 @@
     </Compile>
     <Compile Include="Client\Make Order.Designer.cs">
       <DependentUpon>Make Order.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Employee\Application.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Employee\Application.Designer.cs">
-      <DependentUpon>Application.cs</DependentUpon>
     </Compile>
     <Compile Include="Employee\Employee Dash.cs">
       <SubType>Form</SubType>
@@ -120,14 +120,14 @@
     <Compile Include="Employee\Update Profile.Designer.cs">
       <DependentUpon>Update Profile.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Application_Form.resx">
+      <DependentUpon>Application_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Client\Client Dash.resx">
       <DependentUpon>Client Dash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Client\Make Order.resx">
       <DependentUpon>Make Order.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Employee\Application.resx">
-      <DependentUpon>Application.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Employee\Employee Dash.resx">
       <DependentUpon>Employee Dash.cs</DependentUpon>

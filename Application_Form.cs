@@ -8,13 +8,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace C__project.Employee
+namespace C__project
 {
-    public partial class Application : Form
+    public partial class Application_Form : Form
     {
-        public Application()
+        public Application_Form()
         {
             InitializeComponent();
+        }
+
+        private void bBack_Click(object sender, EventArgs e)
+        {
+            Employee_Dash ed = new Employee_Dash();
+            ed.Show();
+            this.Hide();
         }
     }
 }

@@ -41,5 +41,12 @@ private void bUpdateProfile_Click(object sender, EventArgs e)
         {
 
         }
+
+        private void bApplication_Click(object sender, EventArgs e)
+        {
+            Application_Form ap = new Application_Form();
+            ap.Show();
+            this.Hide();
+        }
     }
 }
