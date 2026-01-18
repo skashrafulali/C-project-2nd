@@ -109,6 +109,30 @@
     <Compile Include="HR\Hr Dash.Designer.cs">
       <DependentUpon>Hr Dash.cs</DependentUpon>
     </Compile>
+    <Compile Include="HR\NoticeBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\NoticeBoard.Designer.cs">
+      <DependentUpon>NoticeBoard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HR\OrderView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\OrderView.Designer.cs">
+      <DependentUpon>OrderView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HR\regEmp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\regEmp.Designer.cs">
+      <DependentUpon>regEmp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HR\SalaryBonus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\SalaryBonus.Designer.cs">
+      <DependentUpon>SalaryBonus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Log in.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,12 +144,6 @@
     </Compile>
     <Compile Include="Employee\Notice Board.Designer.cs">
       <DependentUpon>Notice Board.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HR\Notice.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HR\Notice.Designer.cs">
-      <DependentUpon>Notice.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -162,14 +180,23 @@
     <EmbeddedResource Include="HR\Hr Dash.resx">
       <DependentUpon>Hr Dash.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="HR\NoticeBoard.resx">
+      <DependentUpon>NoticeBoard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HR\OrderView.resx">
+      <DependentUpon>OrderView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HR\regEmp.resx">
+      <DependentUpon>regEmp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HR\SalaryBonus.resx">
+      <DependentUpon>SalaryBonus.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Log in.resx">
       <DependentUpon>Log in.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Employee\Notice Board.resx">
       <DependentUpon>Notice Board.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HR\Notice.resx">
-      <DependentUpon>Notice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -180,12 +207,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="HR\Register employee.resx">
-      <DependentUpon>Register employee.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HR\View Order.resx">
-      <DependentUpon>View Order.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
