@@ -16,5 +16,31 @@ namespace C__project
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Client.Make_Order makeOrderForm = new Client.Make_Order();
+            makeOrderForm.Show();
+            this.Hide();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Client.Order_details orderDetailsForm = new Client.Order_details();
+            orderDetailsForm.Show();
+            this.Hide();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Client.Billings billingsForm = new Client.Billings();
+            billingsForm.Show();
+            this.Hide();
+        }
+
+        private void Client_Dash_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

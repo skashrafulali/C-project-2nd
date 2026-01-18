@@ -1,4 +1,7 @@
-﻿using System;
+﻿using C__project;
+using C__project.HR;
+using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -6,11 +9,22 @@ namespace C__project
 {
     public partial class Hr_Dash : Form
     {
-        // keep a single instance so multiple clicks don't open multiple forms
-        private Register_employee _regForm;
+        
+        
 
         // guard to prevent re-entrancy when logging out
         private bool _logoutInProgress;
+        private void LoadControlInPanel(UserControl control)
+        {
+            panel1.Controls.Clear();        // Clear old content
+            control.Dock = DockStyle.Fill;  // Fill the panel
+            panel1.Controls.Add(control);   // Add the control
+            control.BringToFront();         // Make sure it's visible
+        }
+
+
+
+
 
         public Hr_Dash()
         {
@@ -33,46 +47,133 @@ namespace C__project
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // Register_employee: reuse instance, hide dashboard while it's open,
-            // and show dashboard again when register form closes.
-            if (_regForm != null && !_regForm.IsDisposed)
-            {
-                _regForm.BringToFront();
-                return;
-            }
+            LoadControlInPanel(new regEmp());
 
-            // Create a new Register_employee, hide the HR dashboard while it's open,
-            // and show the dashboard again when the register form is closed.
-            _regForm = new Register_employee();
-            _regForm.FormClosed += (s, args) =>
-            {
-                _regForm = null;
-                this.Show();
-            };
 
-            this.Hide();
-            _regForm.Show(this); // non-modal, owned by HR dashboard
+
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // Open Notice as a modal dialog so user returns to HR dashboard after closing
-            using (var noticeForm = new Notice())
-            {
-                noticeForm.ShowDialog(this);
-            }
+           
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-            // Open View_Order as a modal dialog so user returns to HR dashboard after closing
-            using (var viewOrder = new View_Order())
-            {
-                viewOrder.ShowDialog(this);
-            }
+            
         }
 
         private void button5_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+       
+
+    
+
+        private void button1_MouseEnter(object sender, EventArgs e)
+        {
+            button1.BackColor = Color.Crimson;
+            button1.ForeColor = Color.White;
+        }
+
+        private void button1_MouseLeave(object sender, EventArgs e)
+        {
+            button1.BackColor = Color.FromArgb(21, 27, 46); ;
+            pictureBox1.BackColor = Color.Transparent;
+        }
+
+        private void button2_MouseEnter(object sender, EventArgs e)
+        {
+            button2.BackColor = Color.Crimson;
+            button2.ForeColor = Color.White;
+        
+        }
+
+        private void button2_MouseLeave(object sender, EventArgs e)
+        {
+            button2.BackColor = Color.FromArgb(21, 27, 46); ;
+            pictureBox2.BackColor = Color.Transparent;
+        }
+
+        private void button3_MouseLeave(object sender, EventArgs e)
+        {
+            button3.BackColor = Color.FromArgb(21, 27, 46); ;
+            pictureBox3.BackColor = Color.Transparent;
+        }
+
+        private void button3_MouseEnter(object sender, EventArgs e)
+        {
+            button3.BackColor = Color.Crimson;
+            button3.ForeColor = Color.White;
+
+        }
+
+        private void button4_MouseEnter(object sender, EventArgs e)
+        {
+            button4.BackColor = Color.Crimson;
+            button4.ForeColor = Color.White;
+        }
+
+        private void button4_MouseLeave(object sender, EventArgs e)
+        {
+            button4.BackColor = Color.FromArgb(21, 27, 46); ;
+            pictureBox4.BackColor = Color.Transparent;
+        }
+
+        private void button5_MouseEnter(object sender, EventArgs e)
+        {
+            button5.BackColor = Color.Crimson;
+            button5.ForeColor = Color.White;
+        }
+
+        private void button5_MouseLeave(object sender, EventArgs e)
+        {
+            button5.BackColor = Color.FromArgb(21, 27, 46); ;
+            pictureBox5.BackColor = Color.Transparent;
+        }
+
+        private void button6_MouseEnter(object sender, EventArgs e)
+        {
+            button6.BackColor = Color.Crimson;
+            button6.ForeColor = Color.White;
+        }
+
+     
+
+        private void button6_MouseLeave(object sender, EventArgs e)
+        {
+            button6.BackColor = Color.FromArgb(21, 27, 46); ;
+            pictureBox6.BackColor = Color.Transparent;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Hr_Dash_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
         {
             // Prevent re-entrancy / multiple message boxes
             if (_logoutInProgress)
@@ -92,14 +193,6 @@ namespace C__project
 
                 if (confirm == DialogResult.Yes)
                 {
-                    // Close any child windows owned by the dashboard to avoid orphan windows
-                    try
-                    {
-                        if (_regForm != null && !_regForm.IsDisposed)
-                            _regForm.FormClosed -= null; // no-op safe detach intent
-                    }
-                    catch { /* ignore cleanup errors */ }
-
                     // Try to find an existing Log_in form (reuse) to avoid creating multiples
                     var existingLogin = Application.OpenForms.OfType<Log_in>().FirstOrDefault();
                     if (existingLogin != null)
@@ -126,9 +219,38 @@ namespace C__project
                     _logoutInProgress = false;
                 }
             }
+
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button5_Click_1(object sender, EventArgs e)
+        {
+            LoadControlInPanel(new OrderView());
+
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            LoadControlInPanel(new SalaryBonus());
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+            LoadControlInPanel(new NoticeBoard());
+            
+
+        }
+
+        private void pictureBox8_Click(object sender, EventArgs e)
         {
 
         }

@@ -20,6 +20,7 @@ namespace C__project
             //Application.Run(new Application_Form());
             //Application.Run(new Update_Profile());
             //Application.Run(new Application_Form());
+            Application.Run(new  Client_Dash());
         }
     }
 

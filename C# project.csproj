@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,6 +66,11 @@
     </Compile>
     <Compile Include="Application_Form.Designer.cs">
       <DependentUpon>Application_Form.cs</DependentUpon>
+    <Compile Include="Client\Billing.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Client\Billing.Designer.cs">
+      <DependentUpon>Billing.cs</DependentUpon>
     </Compile>
     <Compile Include="Client\Billings.cs">
       <SubType>Form</SubType>
@@ -70,6 +90,18 @@
     <Compile Include="Client\Make Order.Designer.cs">
       <DependentUpon>Make Order.cs</DependentUpon>
     </Compile>
+    <Compile Include="Client\Order details.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Client\Order details.Designer.cs">
+      <DependentUpon>Order details.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Employee\Application.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Employee\Application.Designer.cs">
+      <DependentUpon>Application.cs</DependentUpon>
+    </Compile>
     <Compile Include="Employee\Employee Dash.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -82,6 +114,30 @@
     <Compile Include="HR\Hr Dash.Designer.cs">
       <DependentUpon>Hr Dash.cs</DependentUpon>
     </Compile>
+    <Compile Include="HR\NoticeBoard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\NoticeBoard.Designer.cs">
+      <DependentUpon>NoticeBoard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HR\OrderView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\OrderView.Designer.cs">
+      <DependentUpon>OrderView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HR\regEmp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\regEmp.Designer.cs">
+      <DependentUpon>regEmp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HR\SalaryBonus.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\SalaryBonus.Designer.cs">
+      <DependentUpon>SalaryBonus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Log in.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,12 +149,6 @@
     </Compile>
     <Compile Include="Employee\Notice Board.Designer.cs">
       <DependentUpon>Notice Board.cs</DependentUpon>
-    </Compile>
-    <Compile Include="HR\Notice.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="HR\Notice.Designer.cs">
-      <DependentUpon>Notice.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,6 +172,8 @@
     </Compile>
     <EmbeddedResource Include="Application_Form.resx">
       <DependentUpon>Application_Form.cs</DependentUpon>
+    <EmbeddedResource Include="Client\Billing.resx">
+      <DependentUpon>Billing.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Client\Client Dash.resx">
       <DependentUpon>Client Dash.cs</DependentUpon>
@@ -129,20 +181,35 @@
     <EmbeddedResource Include="Client\Make Order.resx">
       <DependentUpon>Make Order.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Client\Order details.resx">
+      <DependentUpon>Order details.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Employee\Application.resx">
+      <DependentUpon>Application.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Employee\Employee Dash.resx">
       <DependentUpon>Employee Dash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HR\Hr Dash.resx">
       <DependentUpon>Hr Dash.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="HR\NoticeBoard.resx">
+      <DependentUpon>NoticeBoard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HR\OrderView.resx">
+      <DependentUpon>OrderView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HR\regEmp.resx">
+      <DependentUpon>regEmp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HR\SalaryBonus.resx">
+      <DependentUpon>SalaryBonus.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Log in.resx">
       <DependentUpon>Log in.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Employee\Notice Board.resx">
       <DependentUpon>Notice Board.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HR\Notice.resx">
-      <DependentUpon>Notice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -178,6 +245,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\12.jpg" />
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
