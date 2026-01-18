@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace C__project
+namespace C__project.Employee
 {
-    public partial class Employee_Dash : Form
+    public partial class Application : Form
     {
-        public Employee_Dash()
+        public Application()
         {
             InitializeComponent();
         }

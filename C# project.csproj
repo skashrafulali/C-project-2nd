@@ -61,11 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application_Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Application_Form.Designer.cs">
-      <DependentUpon>Application_Form.cs</DependentUpon>
     <Compile Include="Client\Billing.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -164,14 +159,6 @@
     <Compile Include="HR\View Order.Designer.cs">
       <DependentUpon>View Order.cs</DependentUpon>
     </Compile>
-    <Compile Include="Employee\Update Profile.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Employee\Update Profile.Designer.cs">
-      <DependentUpon>Update Profile.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="Application_Form.resx">
-      <DependentUpon>Application_Form.cs</DependentUpon>
     <EmbeddedResource Include="Client\Billing.resx">
       <DependentUpon>Billing.cs</DependentUpon>
     </EmbeddedResource>
@@ -219,17 +206,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="HR\Register employee.resx">
-      <DependentUpon>Register employee.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="HR\View Order.resx">
-      <DependentUpon>View Order.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Employee\Update Profile.resx">
-      <DependentUpon>Update Profile.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -244,7 +221,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\12.jpg" />
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>

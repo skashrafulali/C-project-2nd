@@ -16,10 +16,5 @@ namespace C__project
         {
             InitializeComponent();
         }
-
-        private void bClear_Click(object sender, EventArgs e)
-        {
-            rtbViewNotice.Text = "";    
-        }
     }
 }

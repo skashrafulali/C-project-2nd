@@ -16,10 +16,6 @@ namespace C__project
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Employee_Dash());
-            //Application.Run(new Application_Form());
-            //Application.Run(new Update_Profile());
-            //Application.Run(new Application_Form());
             Application.Run(new  Client_Dash());
         }
     }
