@@ -91,6 +91,7 @@
     <Compile Include="Client\Order details.Designer.cs">
       <DependentUpon>Order details.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data Access.cs" />
     <Compile Include="Employee\Application.cs">
       <SubType>Form</SubType>
     </Compile>
