@@ -22,7 +22,7 @@ namespace C__project
             control.BringToFront();         // Make sure it's visible
         }
 
-
+        
 
 
 
@@ -30,8 +30,7 @@ namespace C__project
         {
             InitializeComponent();
 
-            // Unsubscribe first to avoid duplicate handlers (can happen if constructor
-            // is called more than once during designer operations). Then subscribe.
+            // Unsubscribe first to avoid duplicate hdfksdfcs
             this.button1.Click -= this.button1_Click;
             this.button1.Click += this.button1_Click;
 
@@ -91,6 +90,7 @@ namespace C__project
         {
             button1.BackColor = Color.Crimson;
             button1.ForeColor = Color.White;
+
         }
 
         private void button1_MouseLeave(object sender, EventArgs e)
@@ -212,7 +212,6 @@ namespace C__project
             }
             finally
             {
-                // If the form is still open (user said No), re-enable the button and clear guard.
                 if (!this.IsDisposed)
                 {
                     this.button5.Enabled = true;

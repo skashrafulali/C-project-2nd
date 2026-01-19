@@ -104,6 +104,12 @@
     <Compile Include="Employee\Employee Dash.Designer.cs">
       <DependentUpon>Employee Dash.cs</DependentUpon>
     </Compile>
+    <Compile Include="HR\EmpApplication.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\EmpApplication.Designer.cs">
+      <DependentUpon>EmpApplication.cs</DependentUpon>
+    </Compile>
     <Compile Include="HR\Hr Dash.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -146,6 +152,18 @@
     <Compile Include="Employee\Notice Board.Designer.cs">
       <DependentUpon>Notice Board.cs</DependentUpon>
     </Compile>
+    <Compile Include="LogIn\SignIn.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogIn\SignIn.Designer.cs">
+      <DependentUpon>SignIn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogIn\SignUp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogIn\SignUp.Designer.cs">
+      <DependentUpon>SignUp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Client\Billing.resx">
@@ -169,6 +187,9 @@
     <EmbeddedResource Include="Employee\Employee Dash.resx">
       <DependentUpon>Employee Dash.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="HR\EmpApplication.resx">
+      <DependentUpon>EmpApplication.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HR\Hr Dash.resx">
       <DependentUpon>Hr Dash.cs</DependentUpon>
     </EmbeddedResource>
@@ -189,6 +210,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Employee\Notice Board.resx">
       <DependentUpon>Notice Board.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogIn\SignIn.resx">
+      <DependentUpon>SignIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogIn\SignUp.resx">
+      <DependentUpon>SignUp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

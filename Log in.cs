@@ -1,5 +1,5 @@
 ﻿using C__project.HR;
-
+using C__project.LogIn;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,19 +14,26 @@ namespace C__project
 {
     public partial class Log_in : Form
     {
+
         public Log_in()
         {
             InitializeComponent();
         }
 
-
-        private void ResetLoginForm()
+        private void Log_in_Load(object sender, EventArgs e)
         {
-            textBox1.Clear();      // username clear
-            textBox2.Clear();      // password clear
-            comboBox1.SelectedIndex = 2; // Client default
-            textBox1.Focus();     // cursor username এ যাবে
+            LoadControl(new SignIn());
         }
+
+        public void LoadControl(UserControl uc)
+        {
+            panel2.Controls.Clear();
+            uc.Dock = DockStyle.Fill;
+            panel2.Controls.Add(uc);
+        }
+
+
+
 
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -71,10 +78,7 @@ namespace C__project
 
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+        
 
         private void label6_Click(object sender, EventArgs e)
         {
@@ -90,78 +94,10 @@ namespace C__project
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            string role = comboBox1.SelectedItem?.ToString();
-            string username = textBox1.Text.Trim();
-            string password = textBox2.Text;
-
-            if (string.IsNullOrEmpty(role))
-            {
-                MessageBox.Show("Please select a role first.");
-                return;
-            }
-
-            switch (role)
-            {
-                case "HR Manager":
-                    if (username == "hr" && password == "1234")
-                    {
-                        Hr_Dash hr = new Hr_Dash();
-                        hr.FormClosed += (s, args) =>
-                        {
-                            ResetLoginForm();
-                            this.Show();
-                        };
-                        hr.Show();
-                        this.Hide();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid HR credentials");
-                    }
-                    break;
-
-                case "Employee":
-                    if (username == "emp" && password == "1234")
-                    {
-                        Employee_Dash emp = new Employee_Dash();
-                        emp.FormClosed += (s, args) =>
-                        {
-                            ResetLoginForm();
-                            this.Show();
-                        };
-                        emp.Show();
-                        this.Hide();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid Employee credentials");
-                    }
-                    break;
-
-                case "Client":
-                    if (username == "client" && password == "1234")
-                    {
-                        Client_Dash cli = new Client_Dash();
-                        cli.FormClosed += (s, args) =>
-                        {
-                            ResetLoginForm();
-                            this.Show();
-                        };
-                        cli.Show();
-                        this.Hide();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid Client credentials");
-                    }
-                    break;
-
-                default:
-                    MessageBox.Show("Invalid role selected");
-                    break;
-            }
-        
+           
         }
+        
+        
 
         private void textBox1_TextChanged_1(object sender, EventArgs e)
         {
@@ -178,16 +114,9 @@ namespace C__project
 
         }
 
-        private void Log_in_Load(object sender, EventArgs e)
+        private void Log_in_Load_1(object sender, EventArgs e)
         {
-            comboBox1.Items.Clear();
-            comboBox1.Items.Add("HR Manager");
-            comboBox1.Items.Add("Employee");
-            comboBox1.Items.Add("Client");
-
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-
-            comboBox1.SelectedIndex = 2;
+            LoadControl(new SignIn());
         }
     }
 }
