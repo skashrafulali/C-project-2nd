@@ -1,11 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace C__project.Client
@@ -35,12 +30,12 @@ namespace C__project.Client
         public Make_Order()
         {
             InitializeComponent();
-            
+
             // Add event handlers for automatic calculation
             comboBox1.SelectedIndexChanged += CalculatePrice;
             comboBox2.SelectedIndexChanged += CalculatePrice;
             textBox2.TextChanged += CalculatePrice;
-            
+
             // Make price textboxes readonly
             textBox3.ReadOnly = true;
             textBox4.ReadOnly = true;
@@ -51,7 +46,7 @@ namespace C__project.Client
             try
             {
                 // Clear price fields if any required field is empty
-                if (comboBox1.SelectedItem == null || comboBox2.SelectedItem == null || 
+                if (comboBox1.SelectedItem == null || comboBox2.SelectedItem == null ||
                     string.IsNullOrWhiteSpace(textBox2.Text))
                 {
                     textBox3.Text = "";
@@ -134,7 +129,7 @@ namespace C__project.Client
                                 $"Price per Unit: ${textBox3.Text}\n" +
                                 $"Total Price: ${textBox4.Text}";
 
-            DialogResult result = MessageBox.Show($"{orderSummary}\n\nDo you want to place this order?", 
+            DialogResult result = MessageBox.Show($"{orderSummary}\n\nDo you want to place this order?",
                                                 "Confirm Order", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
@@ -189,7 +184,157 @@ namespace C__project.Client
         private void Make_Order_FormClosing(object sender, FormClosingEventArgs e)
         {
             Application.Exit();
+        }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            // Validate that all required fields are filled before printing
+            if (!ValidateFormForPrint())
+            {
+                return;
+            }
+
+            printPreviewDialog1.Document = printDocument1;
+            printPreviewDialog1.ShowDialog();
+        }
+
+        private bool ValidateFormForPrint()
+        {
+            if (string.IsNullOrWhiteSpace(textBox1.Text))
+            {
+                MessageBox.Show("Please enter Client ID before printing.", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (comboBox1.SelectedItem == null)
+            {
+                MessageBox.Show("Please select an Order Item before printing.", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(textBox2.Text) || !int.TryParse(textBox2.Text, out int quantity) || quantity <= 0)
+            {
+                MessageBox.Show("Please enter a valid quantity before printing.", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (comboBox2.SelectedItem == null)
+            {
+                MessageBox.Show("Please select a Quality grade before printing.", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(textBox3.Text) || string.IsNullOrWhiteSpace(textBox4.Text))
+            {
+                MessageBox.Show("Price calculation is incomplete. Please check all fields.", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        {
+            try
+            {
+                Graphics graphics = e.Graphics;
+                Font titleFont = new Font("Arial", 18, FontStyle.Bold);
+                Font headerFont = new Font("Arial", 14, FontStyle.Bold);
+                Font normalFont = new Font("Arial", 12, FontStyle.Regular);
+                Font smallFont = new Font("Arial", 10, FontStyle.Regular);
+
+                float yPos = 50;
+                float leftMargin = 100;
+                float rightMargin = 700;
+
+                // Company Header
+                graphics.DrawString("OFFICE MANAGEMENT STUDIO", titleFont, Brushes.Black, leftMargin, yPos);
+                yPos += 40;
+                graphics.DrawString("Order Bill Slip", headerFont, Brushes.Black, leftMargin, yPos);
+                yPos += 30;
+
+                // Draw line separator
+                graphics.DrawLine(new Pen(Color.Black, 2), leftMargin, yPos, rightMargin, yPos);
+                yPos += 30;
+
+                // Bill Information
+                graphics.DrawString("Bill Date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), normalFont, Brushes.Black, leftMargin, yPos);
+                yPos += 25;
+                graphics.DrawString("Client ID: " + textBox1.Text, normalFont, Brushes.Black, leftMargin, yPos);
+                yPos += 25;
+                graphics.DrawString("Order Date: " + DateTime.Now.ToShortDateString(), normalFont, Brushes.Black, leftMargin, yPos);
+                yPos += 25;
+                graphics.DrawString("Delivery Deadline: " + dateTimePicker1.Value.ToShortDateString(), normalFont, Brushes.Black, leftMargin, yPos);
+                yPos += 40;
+
+                // Product Details Header
+                graphics.DrawString("PRODUCT DETAILS", headerFont, Brushes.Black, leftMargin, yPos);
+                yPos += 30;
+
+                // Table headers
+                graphics.DrawString("Item", normalFont, Brushes.Black, leftMargin, yPos);
+                graphics.DrawString("Quality", normalFont, Brushes.Black, leftMargin + 150, yPos);
+                graphics.DrawString("Quantity", normalFont, Brushes.Black, leftMargin + 250, yPos);
+                graphics.DrawString("Unit Price", normalFont, Brushes.Black, leftMargin + 350, yPos);
+                graphics.DrawString("Total Price", normalFont, Brushes.Black, leftMargin + 450, yPos);
+                yPos += 25;
+
+                // Draw line under headers
+                graphics.DrawLine(new Pen(Color.Black, 1), leftMargin, yPos, rightMargin - 50, yPos);
+                yPos += 20;
+
+                // Product data
+                graphics.DrawString(comboBox1.SelectedItem.ToString(), normalFont, Brushes.Black, leftMargin, yPos);
+                graphics.DrawString(comboBox2.SelectedItem.ToString(), normalFont, Brushes.Black, leftMargin + 150, yPos);
+                graphics.DrawString(textBox2.Text, normalFont, Brushes.Black, leftMargin + 250, yPos);
+                graphics.DrawString("$" + textBox3.Text, normalFont, Brushes.Black, leftMargin + 350, yPos);
+                graphics.DrawString("$" + textBox4.Text, normalFont, Brushes.Black, leftMargin + 450, yPos);
+                yPos += 30;
+
+                // Draw line under product data
+                graphics.DrawLine(new Pen(Color.Black, 1), leftMargin, yPos, rightMargin - 50, yPos);
+                yPos += 30;
+
+                // Price Summary
+                graphics.DrawString("PRICE SUMMARY", headerFont, Brushes.Black, leftMargin, yPos);
+                yPos += 30;
+
+                graphics.DrawString("Subtotal:", normalFont, Brushes.Black, leftMargin + 300, yPos);
+                graphics.DrawString("$" + textBox4.Text, normalFont, Brushes.Black, leftMargin + 450, yPos);
+                yPos += 25;
+
+                // Calculate tax (assuming 10% tax)
+                decimal subtotal = decimal.Parse(textBox4.Text);
+                decimal tax = subtotal * 0.10m;
+                decimal finalTotal = subtotal + tax;
+
+                graphics.DrawString("Tax (10%):", normalFont, Brushes.Black, leftMargin + 300, yPos);
+                graphics.DrawString("$" + tax.ToString("F2"), normalFont, Brushes.Black, leftMargin + 450, yPos);
+                yPos += 25;
+
+                // Draw line before total
+                graphics.DrawLine(new Pen(Color.Black, 2), leftMargin + 300, yPos, rightMargin - 50, yPos);
+                yPos += 15;
+
+                graphics.DrawString("TOTAL AMOUNT:", headerFont, Brushes.Black, leftMargin + 300, yPos);
+                graphics.DrawString("$" + finalTotal.ToString("F2"), headerFont, Brushes.Black, leftMargin + 450, yPos);
+                yPos += 50;
+
+                // Footer
+                graphics.DrawString("Thank you for your business!", normalFont, Brushes.Black, leftMargin, yPos);
+                yPos += 20;
+                graphics.DrawString("For any queries, please contact our support team.", smallFont, Brushes.Gray, leftMargin, yPos);
+
+                // Cleanup fonts
+                titleFont.Dispose();
+                headerFont.Dispose();
+                normalFont.Dispose();
+                smallFont.Dispose();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during printing: {ex.Message}", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
