@@ -91,6 +91,7 @@
     <Compile Include="Client\Order details.Designer.cs">
       <DependentUpon>Order details.cs</DependentUpon>
     </Compile>
+    <Compile Include="DataAccess.cs" />
     <Compile Include="Employee\Application.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -179,6 +180,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Client\Billing.resx">
       <DependentUpon>Billing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Client\Billings.resx">
+      <DependentUpon>Billings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Client\Client Dash.resx">
       <DependentUpon>Client Dash.cs</DependentUpon>

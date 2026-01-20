@@ -111,6 +111,7 @@
             this.button2.TabIndex = 6;
             this.button2.Text = "Back";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // textBox1
             // 
@@ -234,6 +235,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Make_Order";
             this.Text = "Make_Order";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Make_Order_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
