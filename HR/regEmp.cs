@@ -19,37 +19,7 @@ namespace C__project.HR
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string username = textBox1.Text.Trim();
-            string name = textBox2.Text.Trim();
-            string address = textBox3.Text.Trim();
-            string password = textBox4.Text.Trim();
-            string jobPost = comboBox1.SelectedItem?.ToString();
 
-            if (username == "" || name == "" || password == "" || jobPost == null)
-            {
-                MessageBox.Show("Please fill all required fields");
-                return;
-            }
-
-            DataAccess da = new DataAccess();
-
-            string query = $@"
-        INSERT INTO Employee
-        (Username, Name, Address, Password, DateOfBirth, JobPost)
-        VALUES
-        (
-            '{username.Replace("'", "''")}',
-            '{name.Replace("'", "''")}',
-            '{address.Replace("'", "''")}',
-            '{password.Replace("'", "''")}',
-            '{dateTimePicker2.Value:yyyy-MM-dd}',
-            '{jobPost}'
-        )";
-
-            int row = da.ExecuteDMLQuery(query);
-
-            if (row > 0)
-                MessageBox.Show("Employee registered successfully");
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -103,36 +73,6 @@ namespace C__project.HR
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void regEmp_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
         {
 
         }

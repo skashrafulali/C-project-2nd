@@ -11,31 +11,13 @@ using System.Windows.Forms;
 namespace C__project.HR
 {
     public partial class EmpDetails : UserControl
-
-        
     {
-
-        private DataAccess da = new DataAccess();
         public EmpDetails()
         {
             InitializeComponent();
-            LoadEmployeeData();
         }
-    private void LoadEmployeeData()
-    {
-        string query = @"
-        SELECT 
-            Username,
-            Name,
-            Address,
-            DateOfBirth,
-            JobPost
-        FROM Employee";
 
-        dataGridView1.DataSource = da.ExecuteQueryTable(query);
-    }
-
-    private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             Hr_Dash form = this.FindForm() as Hr_Dash;
             if (form != null)
