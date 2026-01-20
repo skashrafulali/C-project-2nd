@@ -68,7 +68,6 @@
             this.label4.Size = new System.Drawing.Size(166, 28);
             this.label4.TabIndex = 6;
             this.label4.Text = "Employee Name:";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label1
             // 
@@ -80,7 +79,6 @@
             this.label1.Size = new System.Drawing.Size(132, 28);
             this.label1.TabIndex = 7;
             this.label1.Text = "Employee ID:";
-            this.label1.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // label2
             // 
@@ -141,6 +139,7 @@
             this.button1.TabIndex = 23;
             this.button1.Text = "     Save";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -157,6 +156,7 @@
             this.button2.TabIndex = 24;
             this.button2.Text = "     Update";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // button3
             // 
@@ -173,6 +173,7 @@
             this.button3.TabIndex = 25;
             this.button3.Text = "     Clear";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // dataGridView1
             // 

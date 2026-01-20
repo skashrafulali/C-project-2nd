@@ -19,13 +19,16 @@ namespace C__project.HR
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string username = textBox1.Text.Trim();
-            string name = textBox2.Text.Trim();
-            string address = textBox3.Text.Trim();
-            string password = textBox4.Text.Trim();
+            // TextBox mapping
+            string empId = textBox1.Text.Trim();     // User Id
+            string name = textBox2.Text.Trim();      // Name
+            string address = textBox3.Text.Trim();   // Address
+            string password = textBox4.Text.Trim();  // Password
             string jobPost = comboBox1.SelectedItem?.ToString();
+            string dob = dateTimePicker2.Value.ToString("yyyy-MM-dd");
 
-            if (username == "" || name == "" || password == "" || jobPost == null)
+            // Validation
+            if (empId == "" || name == "" || password == "" || jobPost == null)
             {
                 MessageBox.Show("Please fill all required fields");
                 return;
@@ -33,23 +36,50 @@ namespace C__project.HR
 
             DataAccess da = new DataAccess();
 
-            string query = $@"
-        INSERT INTO Employee
-        (Username, Name, Address, Password, DateOfBirth, JobPost)
-        VALUES
-        (
-            '{username.Replace("'", "''")}',
-            '{name.Replace("'", "''")}',
-            '{address.Replace("'", "''")}',
-            '{password.Replace("'", "''")}',
-            '{dateTimePicker2.Value:yyyy-MM-dd}',
-            '{jobPost}'
-        )";
+            // 🔹 Duplicate Employee Check
+            string checkQuery =
+                $"SELECT * FROM Employee WHERE EmpId = '{empId.Replace("'", "''")}'";
 
-            int row = da.ExecuteDMLQuery(query);
+            DataTable checkDt = da.ExecuteQueryTable(checkQuery);
+
+            if (checkDt.Rows.Count > 0)
+            {
+                MessageBox.Show("This Employee ID already exists");
+                return;
+            }
+
+            // 🔹 Insert Employee
+            string insertQuery = $@"
+            INSERT INTO Employee
+            (EmpId, Name, Password, Address, DateOfBirth, JobPost)
+            VALUES
+            (
+                '{empId.Replace("'", "''")}',
+                '{name.Replace("'", "''")}',
+                '{password.Replace("'", "''")}',
+                '{address.Replace("'", "''")}',
+                '{dob}',
+                '{jobPost}'
+            )";
+
+            int row = da.ExecuteDMLQuery(insertQuery);
 
             if (row > 0)
+            {
                 MessageBox.Show("Employee registered successfully");
+
+                // Clear fields
+                textBox1.Clear();
+                textBox2.Clear();
+                textBox3.Clear();
+                textBox4.Clear();
+                comboBox1.SelectedIndex = -1;
+                dateTimePicker2.Value = DateTime.Now;
+            }
+            else
+            {
+                MessageBox.Show("Employee registration failed");
+            }
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)

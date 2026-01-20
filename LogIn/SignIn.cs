@@ -110,9 +110,9 @@ namespace C__project.LogIn
                 case "Employee":
                     {
                         query = $@"
-                SELECT * FROM dbo.Employee
-                WHERE Username = '{username.Replace("'", "''")}'
-                AND Password = '{password.Replace("'", "''")}'";
+    SELECT * FROM dbo.Employee
+    WHERE EmpId = '{username.Replace("'", "''")}'
+    AND Password = '{password.Replace("'", "''")}'";
 
                         dt = da.ExecuteQueryTable(query);
 
@@ -124,7 +124,7 @@ namespace C__project.LogIn
                         }
                         else
                         {
-                            MessageBox.Show("Invalid Employee credentials");
+                            MessageBox.Show("Invalid Employee ID or Password");
                         }
                         break;
                     }
