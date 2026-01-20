@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -47,67 +48,90 @@ namespace C__project.LogIn
                 return;
             }
 
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                MessageBox.Show("Username and password required.");
+                return;
+            }
+
+            DataAccess da = new DataAccess();
+            DataTable dt;
+            string query = "";
+
             switch (role)
             {
-                case "HR Manager":
-                    if (username == "hr" && password == "1234")
-                    {
-                        Hr_Dash hr = new Hr_Dash();
-                        hr.FormClosed += (s, args) =>
-                        {
-                            ResetLoginForm();
-                            this.Show();
-                        };
-                        hr.Show();
-                        this.Hide();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid HR credentials");
-                    }
-                    break;
-
-                case "Employee":
-                    if (username == "emp" && password == "1234")
-                    {
-                        Employee_Dash emp = new Employee_Dash();
-                        emp.FormClosed += (s, args) =>
-                        {
-                            ResetLoginForm();
-                            this.Show();
-                        };
-                        emp.Show();
-                        this.Hide();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Invalid Employee credentials");
-                    }
-                    break;
-
+                // ================= CLIENT LOGIN =================
                 case "Client":
-                    if (username == "client" && password == "1234")
                     {
-                        Client_Dash cli = new Client_Dash();
-                        cli.FormClosed += (s, args) =>
+                        query = $@"
+                SELECT * FROM dbo.Client
+                WHERE Username = '{username.Replace("'", "''")}'
+                AND Password = '{password.Replace("'", "''")}'";
+
+                        dt = da.ExecuteQueryTable(query);
+
+                        if (dt.Rows.Count == 1)
                         {
-                            ResetLoginForm();
-                            this.Show();
-                        };
-                        cli.Show();
-                        this.Hide();
+                            Client_Dash cli = new Client_Dash();
+                            cli.Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid Client username or password");
+                        }
+                        break;
                     }
-                    else
+
+                // ================= HR LOGIN =================
+                case "HR Manager":
                     {
-                        MessageBox.Show("Invalid Client credentials");
+                        query = $@"
+                SELECT * FROM dbo.HR
+                WHERE Username = '{username.Replace("'", "''")}'
+                AND Password = '{password.Replace("'", "''")}'";
+
+                        dt = da.ExecuteQueryTable(query);
+
+                        if (dt.Rows.Count == 1)
+                        {
+                            Hr_Dash hr = new Hr_Dash();
+                            hr.Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid HR credentials");
+                        }
+                        break;
                     }
-                    break;
+
+                // ================= EMPLOYEE LOGIN =================
+                case "Employee":
+                    {
+                        query = $@"
+                SELECT * FROM dbo.Employee
+                WHERE Username = '{username.Replace("'", "''")}'
+                AND Password = '{password.Replace("'", "''")}'";
+
+                        dt = da.ExecuteQueryTable(query);
+
+                        if (dt.Rows.Count == 1)
+                        {
+                            Employee_Dash emp = new Employee_Dash();
+                            emp.Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Invalid Employee credentials");
+                        }
+                        break;
+                    }
 
                 default:
                     MessageBox.Show("Invalid role selected");
                     break;
-
-
             }
         }
 
