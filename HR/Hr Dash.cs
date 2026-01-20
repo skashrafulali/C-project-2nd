@@ -1,5 +1,6 @@
 ﻿using C__project;
 using C__project.HR;
+using C__project.LogIn;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -21,8 +22,18 @@ namespace C__project
             panel1.Controls.Add(control);   // Add the control
             control.BringToFront();         // Make sure it's visible
         }
+        public void LoadControl(UserControl uc)
+        {
+            panel1.Controls.Clear();
+            uc.Dock = DockStyle.Fill;
+            panel1.Controls.Add(uc);
+        }
+        private void Notice_BackButtonClicked(object sender, EventArgs e)
+        {
+            // Hr dashboard default page
+            LoadControlInPanel(new regEmp());
+        }
 
-        
 
 
 
@@ -170,7 +181,7 @@ namespace C__project
 
         private void Hr_Dash_Load(object sender, EventArgs e)
         {
-
+            LoadControl(new welcome());
         }
 
         private void button6_Click(object sender, EventArgs e)
@@ -245,7 +256,7 @@ namespace C__project
         private void button4_Click_1(object sender, EventArgs e)
         {
             LoadControlInPanel(new NoticeBoard());
-            
+
 
         }
 

@@ -146,6 +146,12 @@
     <Compile Include="HR\SalaryBonus.Designer.cs">
       <DependentUpon>SalaryBonus.cs</DependentUpon>
     </Compile>
+    <Compile Include="HR\welcome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HR\welcome.Designer.cs">
+      <DependentUpon>welcome.cs</DependentUpon>
+    </Compile>
     <Compile Include="Log in.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -213,6 +219,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="HR\SalaryBonus.resx">
       <DependentUpon>SalaryBonus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HR\welcome.resx">
+      <DependentUpon>welcome.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Log in.resx">
       <DependentUpon>Log in.cs</DependentUpon>

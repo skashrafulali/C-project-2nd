@@ -1,4 +1,5 @@
-﻿using System;
+﻿using C__project.LogIn;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,7 +38,11 @@ namespace C__project.HR
 
         private void pictureBox1_Click_1(object sender, EventArgs e)
         {
-
+            Hr_Dash form = this.FindForm() as Hr_Dash;
+            if (form != null)
+            {
+                form.LoadControl(new welcome());
+            }
         }
     }
     

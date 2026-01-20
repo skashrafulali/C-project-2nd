@@ -29,7 +29,11 @@ namespace C__project.HR
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            Hr_Dash form = this.FindForm() as Hr_Dash;
+            if (form != null)
+            {
+                form.LoadControl(new welcome());
+            }
         }
 
         private void button1_MouseEnter(object sender, EventArgs e)

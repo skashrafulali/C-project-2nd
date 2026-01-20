@@ -16,5 +16,19 @@ namespace C__project.HR
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Hr_Dash form = this.FindForm() as Hr_Dash;
+            if (form != null)
+            {
+                form.LoadControl(new welcome());
+            }
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

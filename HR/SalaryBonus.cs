@@ -36,5 +36,14 @@ namespace C__project.HR
         {
 
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Hr_Dash form = this.FindForm() as Hr_Dash;
+            if (form != null)
+            {
+                form.LoadControl(new welcome());
+            }
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace C__project.HR
             InitializeComponent();
         }
         // created by nafis
-
+        
         private void button1_MouseEnter(object sender, EventArgs e)
         {
             button1.BackColor = Color.Tomato;
@@ -33,11 +33,15 @@ namespace C__project.HR
 
         private void button1_Click(object sender, EventArgs e)
         {
-            BackButtonClicked?.Invoke(this, EventArgs.Empty);
+            Hr_Dash form = this.FindForm() as Hr_Dash;
+            if (form != null)
+            {
+                form.LoadControl(new welcome());
+            }
 
 
         }
-        public event EventHandler BackButtonClicked;
+       
 
 
         private void pictureBox2_Click(object sender, EventArgs e)
