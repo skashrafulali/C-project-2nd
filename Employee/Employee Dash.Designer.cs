@@ -42,6 +42,7 @@ namespace C__project
             this.button1.TabIndex = 0;
             this.button1.Text = "Notice Board";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -61,6 +62,7 @@ namespace C__project
             this.button3.TabIndex = 2;
             this.button3.Text = "Update Profile";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -83,6 +85,7 @@ namespace C__project
             this.Controls.Add(this.button1);
             this.Name = "Employee_Dash";
             this.Text = "Employee_Dash";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Employee_Dash_FormClosing);
             this.ResumeLayout(false);
 
         }

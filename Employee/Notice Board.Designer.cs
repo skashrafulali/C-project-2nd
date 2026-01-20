@@ -1,4 +1,4 @@
-﻿namespace C__project
+namespace C__project
 {
     partial class Notice_Board
     {
@@ -40,6 +40,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(772, 369);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // button1
             // 
