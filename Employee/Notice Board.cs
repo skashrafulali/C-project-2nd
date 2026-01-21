@@ -58,14 +58,13 @@ namespace C__project
 
         private void button1_Click(object sender, EventArgs e)
         {
-            _dash.Show();   // আগের dashboard
+            _dash.Show();   
             this.Close();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Optional: Handle cell clicks if you want to implement functionality
-            // like viewing full notice details when a cell is clicked
+            
         }
     }
 }

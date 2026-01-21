@@ -28,13 +28,7 @@ namespace C__project.LogIn
         }
 
 
-        private void ResetLoginForm()
-        {
-            textBox1.Clear();      // username clear
-            textBox2.Clear();      // password clear
-            comboBox1.SelectedIndex = 2; // Client default
-            textBox1.Focus();     // cursor username এ যাবে
-        }
+       
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -60,7 +54,7 @@ namespace C__project.LogIn
 
             switch (role)
             {
-                // ================= CLIENT LOGIN =================
+                
                 case "Client":
                     {
                         query = $@"
@@ -87,7 +81,7 @@ namespace C__project.LogIn
                         break;
                     }
 
-                // ================= HR LOGIN =================
+                
                 case "HR Manager":
                     {
                         query = $@"
@@ -114,7 +108,7 @@ namespace C__project.LogIn
                         break;
                     }
 
-                // ================= EMPLOYEE LOGIN =================
+                
                 case "Employee":
                     {
                         query = $@"

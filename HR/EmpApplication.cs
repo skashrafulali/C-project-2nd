@@ -36,7 +36,7 @@ namespace C__project.HR
 
             dataGridView1.DataSource = da.ExecuteQueryTable(query);
 
-            // Optional UI improvement
+           
             dataGridView1.AutoSizeColumnsMode =
                 DataGridViewAutoSizeColumnsMode.Fill;
 

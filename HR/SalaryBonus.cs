@@ -32,15 +32,15 @@ namespace C__project.HR
             string query = "SELECT EmpId, Name FROM Employee";
             DataTable dt = da.ExecuteQueryTable(query);
 
-            // ComboBox1 → EmpId
+            
             comboBox1.DataSource = dt;
             comboBox1.DisplayMember = "EmpId";
             comboBox1.ValueMember = "EmpId";
 
-            // ComboBox2 → Name
-            comboBox2.DataSource = dt.Copy();   // same data, different control
+            
+            comboBox2.DataSource = dt.Copy();   
             comboBox2.DisplayMember = "Name";
-            comboBox2.ValueMember = "EmpId";    // hidden EmpId
+            comboBox2.ValueMember = "EmpId";    
         }
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -148,7 +148,7 @@ namespace C__project.HR
 
             DataAccess da = new DataAccess();
 
-            // 🔹 STEP 1: Check employee already has salary or not
+            
             string checkQuery =
                 $"SELECT * FROM SalaryBonus WHERE [Emp Id] = '{empId}'";
 
@@ -156,10 +156,10 @@ namespace C__project.HR
 
             string query;
 
-            // 🔹 STEP 2: Decide INSERT or UPDATE
+           
             if (dt.Rows.Count > 0)
             {
-                // UPDATE (already exists)
+                
                 query = $@"
         UPDATE SalaryBonus
         SET
@@ -171,7 +171,7 @@ namespace C__project.HR
             }
             else
             {
-                // INSERT (first time)
+                
                 query = $@"
         INSERT INTO SalaryBonus
         ([Emp Id], Salary, Bonus, Deduction, TotalSalary)

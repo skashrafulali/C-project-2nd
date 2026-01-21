@@ -110,8 +110,8 @@ namespace C__project.Employee
 
         private void button2_Click(object sender, EventArgs e)
         {
-            _dash.Show();   // আগের dashboard দেখাও
-            this.Close();   // এই form বন্ধ করো
+            _dash.Show();  
+            this.Close();   
         }
     }
 }

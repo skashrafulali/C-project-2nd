@@ -1,4 +1,4 @@
-﻿using C__project;
+using C__project;
 using C__project.HR;
 using C__project.LogIn;
 using System;
@@ -13,14 +13,13 @@ namespace C__project
         
         
 
-        // guard to prevent re-entrancy when logging out
         private bool _logoutInProgress;
         private void LoadControlInPanel(UserControl control)
         {
-            panel1.Controls.Clear();        // Clear old content
-            control.Dock = DockStyle.Fill;  // Fill the panel
-            panel1.Controls.Add(control);   // Add the control
-            control.BringToFront();         // Make sure it's visible
+            panel1.Controls.Clear();        
+            control.Dock = DockStyle.Fill; 
+            panel1.Controls.Add(control);   
+            control.BringToFront();         
         }
         public void LoadControl(UserControl uc)
         {
@@ -30,7 +29,7 @@ namespace C__project
         }
         private void Notice_BackButtonClicked(object sender, EventArgs e)
         {
-            // Hr dashboard default page
+           
             LoadControlInPanel(new regEmp());
         }
 
@@ -41,7 +40,7 @@ namespace C__project
         {
             InitializeComponent();
 
-            // Unsubscribe first to avoid duplicate hdfksdfcs
+            
             this.button1.Click -= this.button1_Click;
             this.button1.Click += this.button1_Click;
 
@@ -186,7 +185,7 @@ namespace C__project
 
         private void button6_Click(object sender, EventArgs e)
         {
-            // Prevent re-entrancy / multiple message boxes
+            
             if (_logoutInProgress)
                 return;
 
@@ -204,7 +203,7 @@ namespace C__project
 
                 if (confirm == DialogResult.Yes)
                 {
-                    // Try to find an existing Log_in form (reuse) to avoid creating multiples
+                   
                     var existingLogin = Application.OpenForms.OfType<Log_in>().FirstOrDefault();
                     if (existingLogin != null)
                     {
@@ -218,7 +217,7 @@ namespace C__project
                         login.Show();
                     }
 
-                    // Close this dashboard (this will dispose it)
+                    
                     this.Close();
                 }
             }

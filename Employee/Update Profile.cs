@@ -167,7 +167,7 @@ namespace C__project.Employee
 
         private void button2_Click(object sender, EventArgs e)
         {
-            _dash.Show();   // আগের dashboard
+            _dash.Show();   
             this.Close();
         }
 
