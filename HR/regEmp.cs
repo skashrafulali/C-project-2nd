@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,15 +19,15 @@ namespace C__project.HR
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // TextBox mapping
-            string empId = textBox1.Text.Trim();     // User Id
-            string name = textBox2.Text.Trim();      // Name
-            string address = textBox3.Text.Trim();   // Address
-            string password = textBox4.Text.Trim();  // Password
+            
+            string empId = textBox1.Text.Trim();     
+            string name = textBox2.Text.Trim();      
+            string address = textBox3.Text.Trim();   
+            string password = textBox4.Text.Trim();  
             string jobPost = comboBox1.SelectedItem?.ToString();
             string dob = dateTimePicker2.Value.ToString("yyyy-MM-dd");
 
-            // Validation
+           
             if (empId == "" || name == "" || password == "" || jobPost == null)
             {
                 MessageBox.Show("Please fill all required fields");
@@ -36,7 +36,7 @@ namespace C__project.HR
 
             DataAccess da = new DataAccess();
 
-            // 🔹 Duplicate Employee Check
+           
             string checkQuery =
                 $"SELECT * FROM Employee WHERE EmpId = '{empId.Replace("'", "''")}'";
 
@@ -48,7 +48,7 @@ namespace C__project.HR
                 return;
             }
 
-            // 🔹 Insert Employee
+           
             string insertQuery = $@"
             INSERT INTO Employee
             (EmpId, Name, Password, Address, DateOfBirth, JobPost)
@@ -68,7 +68,7 @@ namespace C__project.HR
             {
                 MessageBox.Show("Employee registered successfully");
 
-                // Clear fields
+               
                 textBox1.Clear();
                 textBox2.Clear();
                 textBox3.Clear();
