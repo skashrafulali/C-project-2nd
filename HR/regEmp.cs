@@ -19,16 +19,15 @@ namespace C__project.HR
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            string empId = textBox1.Text.Trim();     
-            string name = textBox2.Text.Trim();      
-            string address = textBox3.Text.Trim();   
-            string password = textBox4.Text.Trim();  
-            string jobPost = comboBox1.SelectedItem?.ToString();
-            string dob = dateTimePicker2.Value.ToString("yyyy-MM-dd");
 
-           
-            if (empId == "" || name == "" || password == "" || jobPost == null)
+            string userId = textBox1.Text.Trim();   // Employee UserId
+            string fullName = textBox2.Text.Trim();   // Name
+            string address = textBox3.Text.Trim();
+            string password = textBox4.Text.Trim();
+            string dob = dateTimePicker2.Value.ToString("yyyy-MM-dd");
+            string jobPost = comboBox1.SelectedItem?.ToString();
+
+            if (userId == "" || fullName == "" || password == "" || jobPost == null)
             {
                 MessageBox.Show("Please fill all required fields");
                 return;
@@ -36,31 +35,43 @@ namespace C__project.HR
 
             DataAccess da = new DataAccess();
 
-           
-            string checkQuery =
-                $"SELECT * FROM Employee WHERE EmpId = '{empId.Replace("'", "''")}'";
+            // 1️⃣ Check User already exists in Users table
+            string checkQuery = $@"
+        SELECT * FROM Users
+        WHERE UserId = '{userId.Replace("'", "''")}'";
 
             DataTable checkDt = da.ExecuteQueryTable(checkQuery);
 
             if (checkDt.Rows.Count > 0)
             {
-                MessageBox.Show("This Employee ID already exists");
+                MessageBox.Show("This User ID already exists");
                 return;
             }
 
-           
+            // 2️⃣ Insert Employee as User (Created by HR)
             string insertQuery = $@"
-            INSERT INTO Employee
-            (EmpId, Name, Password, Address, DateOfBirth, JobPost)
-            VALUES
-            (
-                '{empId.Replace("'", "''")}',
-                '{name.Replace("'", "''")}',
-                '{password.Replace("'", "''")}',
-                '{address.Replace("'", "''")}',
-                '{dob}',
-                '{jobPost}'
-            )";
+        INSERT INTO Users
+        (
+            UserId,
+            Password,
+            FullName,
+            Address,
+            DateOfBirth,
+            CreatedBy,
+            IsEmployee,
+            CreatedDate
+        )
+        VALUES
+        (
+            '{userId.Replace("'", "''")}',
+            '{password.Replace("'", "''")}',
+            '{fullName.Replace("'", "''")}',
+            '{address.Replace("'", "''")}',
+            '{dob}',
+            'HR',
+            1,
+            GETDATE()
+        )";
 
             int row = da.ExecuteDMLQuery(insertQuery);
 
@@ -68,7 +79,7 @@ namespace C__project.HR
             {
                 MessageBox.Show("Employee registered successfully");
 
-               
+                // clear form
                 textBox1.Clear();
                 textBox2.Clear();
                 textBox3.Clear();

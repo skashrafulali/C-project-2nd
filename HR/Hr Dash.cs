@@ -203,7 +203,7 @@ namespace C__project
 
                 if (confirm == DialogResult.Yes)
                 {
-                   
+                    Session.Clear();
                     var existingLogin = Application.OpenForms.OfType<Log_in>().FirstOrDefault();
                     if (existingLogin != null)
                     {

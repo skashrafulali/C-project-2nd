@@ -1,4 +1,4 @@
-﻿using C__project.LogIn;
+using C__project.LogIn;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,14 +29,19 @@ namespace C__project.HR
             DataAccess da = new DataAccess();
 
             string query = @"
-    SELECT
-        [Client Id],
-        [Order item],
-        Quantity,
-        Quality,
-        Deadline,
-        [Total price]
-    FROM [Make Order]";
+        SELECT
+            OrderId,
+            UserId,
+            OrderItem,
+            Quality,
+            Quantity,
+            PricePerUnit,
+            TotalPrice,
+            Deadline,
+            OrderDate,
+            Status
+        FROM Orders
+        ORDER BY OrderDate DESC";
 
             dataGridView1.DataSource = da.ExecuteQueryTable(query);
         }

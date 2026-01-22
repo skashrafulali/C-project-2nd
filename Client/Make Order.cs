@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using static System.Collections.Specialized.BitVector32;
 
 namespace C__project.Client
 {
@@ -88,89 +89,87 @@ namespace C__project.Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            if (string.IsNullOrWhiteSpace(textBox1.Text))
+            if (dataGridView1.Rows.Count == 0)
             {
-                MessageBox.Show("Please enter Client ID.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please add at least one item");
                 return;
             }
 
-            if (comboBox1.SelectedItem == null)
+            string userId = Session.UserId;
+            DateTime deadline = dateTimePicker1.Value;
+
+            decimal grandTotal = 0;
+            decimal lastPricePerUnit = 0;
+
+            DataAccess da = new DataAccess();
+
+            try
             {
-                MessageBox.Show("Please select an Order Item.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(textBox2.Text) || !int.TryParse(textBox2.Text, out int quantity) || quantity <= 0)
-            {
-                MessageBox.Show("Please enter a valid quantity (positive number).", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (comboBox2.SelectedItem == null)
-            {
-                MessageBox.Show("Please select a Quality grade.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (dateTimePicker1.Value.Date < DateTime.Now.Date)
-            {
-                MessageBox.Show("Please select a future date for the deadline.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            
-            string orderSummary = $"Order Summary:\n\n" +
-                                $"Client ID: {textBox1.Text}\n" +
-                                $"Order Item: {comboBox1.SelectedItem}\n" +
-                                $"Quantity: {textBox2.Text}\n" +
-                                $"Quality: {comboBox2.SelectedItem}\n" +
-                                $"Deadline: {dateTimePicker1.Value.ToShortDateString()}\n" +
-                                $"Price per Unit: ${textBox3.Text}\n" +
-                                $"Total Price: ${textBox4.Text}";
-
-            DialogResult result = MessageBox.Show($"{orderSummary}\n\nDo you want to place this order?",
-                                                "Confirm Order", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                try
+                foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    
-                    int rowsAffected = dataAccess.ExecuteDMLQuery(
-                    $@"INSERT INTO [office management studio].[dbo].[Make Order] ([Client Id], [Order item], [Quantity], [Quality], [Deadline], [Total price]) 
-                     VALUES ('{textBox1.Text.Replace("'", "''")}', 
-                              '{comboBox1.SelectedItem.ToString().Replace("'", "''")}', 
-                               {int.Parse(textBox2.Text)}, 
-                              '{comboBox2.SelectedItem.ToString().Replace("'", "''")}', 
-                              '{dateTimePicker1.Value.Date:yyyy-MM-dd}', 
-                               {decimal.Parse(textBox4.Text)})");
+                    if (row.IsNewRow) continue;
 
-                    if (rowsAffected > 0)
-                    {
-                        MessageBox.Show("Order placed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        ClearForm();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to place order. No rows were affected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+                    string item = row.Cells[0].Value.ToString();
+                    string quality = row.Cells[1].Value.ToString();
+                    int quantity = Convert.ToInt32(row.Cells[2].Value);
+                    decimal pricePerUnit = Convert.ToDecimal(row.Cells[3].Value);
+                    decimal totalPrice = Convert.ToDecimal(row.Cells[4].Value);
+
+                    // 🔹 calculate totals
+                    grandTotal += totalPrice;
+                    lastPricePerUnit = pricePerUnit;
+
+                    // 🔹 insert each item
+                    string insertQuery = $@"
+                INSERT INTO Orders
+                (
+                    UserId,
+                    OrderItem,
+                    Quality,
+                    Quantity,
+                    PricePerUnit,
+                    TotalPrice,
+                    Deadline,
+                    OrderDate,
+                    Status
+                )
+                VALUES
+                (
+                    '{userId}',
+                    '{item}',
+                    '{quality}',
+                    {quantity},
+                    {pricePerUnit},
+                    {totalPrice},
+                    '{deadline:yyyy-MM-dd}',
+                    GETDATE(),
+                    'Pending'
+                )";
+
+                    da.ExecuteDMLQuery(insertQuery);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error saving order: {ex.Message}\n\nDetails: {ex.ToString()}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+
+                // 🟢 2. Show totals in textbox
+                textBox3.Text = lastPricePerUnit.ToString("F2");
+                textBox4.Text = grandTotal.ToString("F2");
+
+                MessageBox.Show("Order placed successfully");
+
+                // 🧹 clear after order
+                dataGridView1.Rows.Clear();
+                ClearForm();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error placing order:\n" + ex.Message);
             }
         }
 
         private void ClearForm()
         {
-            textBox1.Text = "";
-            textBox2.Text = "";
-            textBox3.Text = "";
-            textBox4.Text = "";
             comboBox1.SelectedIndex = -1;
             comboBox2.SelectedIndex = -1;
+            textBox2.Clear(); // quantity
             dateTimePicker1.Value = DateTime.Now;
         }
 
@@ -336,6 +335,90 @@ namespace C__project.Client
             {
                 MessageBox.Show($"Error during printing: {ex.Message}", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void Make_Order_Load(object sender, EventArgs e)
+        {
+            textBox1.Text = Session.UserId;
+            textBox1.ReadOnly = true;
+
+            // Clear old columns (important)
+            dataGridView1.Columns.Clear();
+
+            // Add columns
+            dataGridView1.Columns.Add("OrderItem", "Order Item");
+            dataGridView1.Columns.Add("Quality", "Quality");
+            dataGridView1.Columns.Add("Quantity", "Quantity");
+            dataGridView1.Columns.Add("PricePerUnit", "Price Per Unit");
+            dataGridView1.Columns.Add("TotalPrice", "Total Price");
+
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AllowUserToAddRows = false;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedItem == null || comboBox2.SelectedItem == null)
+            {
+                MessageBox.Show("Select item and quality");
+                return;
+            }
+
+            if (!int.TryParse(textBox2.Text, out int quantity) || quantity <= 0)
+            {
+                MessageBox.Show("Invalid quantity");
+                return;
+            }
+
+            string item = comboBox1.SelectedItem.ToString();
+            string quality = comboBox2.SelectedItem.ToString();
+            decimal pricePerUnit = decimal.Parse(textBox3.Text);
+            decimal totalPrice = decimal.Parse(textBox4.Text);
+
+            dataGridView1.Rows.Add(
+                item,
+                quality,
+                quantity,
+                pricePerUnit,
+                totalPrice
+            );
+
+            // clear inputs for next item
+            comboBox1.SelectedIndex = -1;
+            comboBox2.SelectedIndex = -1;
+            textBox2.Clear();
+            textBox3.Clear();
+            textBox4.Clear();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

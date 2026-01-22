@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace C__project.HR
 {
@@ -23,38 +24,53 @@ namespace C__project.HR
         private void SalaryBonus_Load(object sender, EventArgs e)
         {
             LoadEmployeeCombo();
+            LoadSalaryGrid();
         }
 
         private void LoadEmployeeCombo()
         {
             DataAccess da = new DataAccess();
 
-            string query = "SELECT EmpId, Name FROM Employee";
+            string query = @"
+        SELECT UserId, FullName 
+        FROM Users 
+        WHERE IsEmployee = 1";
+
             DataTable dt = da.ExecuteQueryTable(query);
 
-            
-            comboBox1.DataSource = dt;
-            comboBox1.DisplayMember = "EmpId";
-            comboBox1.ValueMember = "EmpId";
+            comboBox2.DataSource = dt;
+            comboBox2.DisplayMember = "UserId";   // show Employee ID
+            comboBox2.ValueMember = "UserId";
 
-            
-            comboBox2.DataSource = dt.Copy();   
-            comboBox2.DisplayMember = "Name";
-            comboBox2.ValueMember = "EmpId";    
+            comboBox2.SelectedIndex = -1;
         }
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox2.SelectedValue != null)
-            {
-                comboBox1.SelectedValue = comboBox2.SelectedValue;
-            }
+            if (comboBox2.SelectedItem == null) return;
+
+            DataRowView drv = comboBox2.SelectedItem as DataRowView;
+
+           
         }
 
         private void LoadSalaryGrid()
         {
             DataAccess da = new DataAccess();
-            string query = "SELECT * FROM SalaryBonus";
+
+            string query = @"
+        SELECT 
+            sb.UserId,
+            u.FullName,
+            sb.Salary,
+            sb.Bonus,
+            sb.Deduction,
+            sb.TotalSalary
+        FROM SalaryBonus sb
+        INNER JOIN Users u ON sb.UserId = u.UserId";
+
             dataGridView1.DataSource = da.ExecuteQueryTable(query);
+
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
 
@@ -64,8 +80,8 @@ namespace C__project.HR
             textBox2.Clear();
             textBox3.Clear();
             textBox4.Clear();
-            comboBox1.SelectedIndex = -1;
             comboBox2.SelectedIndex = -1;
+            
         }
 
 
@@ -134,62 +150,35 @@ namespace C__project.HR
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedValue == null)
+            if (!decimal.TryParse(textBox1.Text, out decimal basic) ||
+     !decimal.TryParse(textBox2.Text, out decimal bonus) ||
+     !decimal.TryParse(textBox3.Text, out decimal deduction))
             {
-                MessageBox.Show("Please select employee");
+                MessageBox.Show("Please enter valid numeric values");
                 return;
             }
 
-            string empId = comboBox1.SelectedValue.ToString();
-            string basic = textBox1.Text;
-            string bonus = textBox2.Text;
-            string deduction = textBox3.Text;
-            string total = textBox4.Text;
+            decimal total = basic + bonus - deduction;
+            textBox4.Text = total.ToString();
+
+            string userId = comboBox2.SelectedValue.ToString();
 
             DataAccess da = new DataAccess();
 
-            
-            string checkQuery =
-                $"SELECT * FROM SalaryBonus WHERE [Emp Id] = '{empId}'";
-
-            DataTable dt = da.ExecuteQueryTable(checkQuery);
-
-            string query;
-
-           
-            if (dt.Rows.Count > 0)
-            {
-                
-                query = $@"
-        UPDATE SalaryBonus
-        SET
-            Salary = '{basic}',
-            Bonus = '{bonus}',
-            Deduction = '{deduction}',
-            TotalSalary = '{total}'
-        WHERE [Emp Id] = '{empId}'";
-            }
-            else
-            {
-                
-                query = $@"
-        INSERT INTO SalaryBonus
-        ([Emp Id], Salary, Bonus, Deduction, TotalSalary)
-        VALUES
-        (
-            '{empId}',
-            '{basic}',
-            '{bonus}',
-            '{deduction}',
-            '{total}'
-        )";
-            }
+            string query = $@"
+UPDATE SalaryBonus
+SET
+    Salary = {basic},
+    Bonus = {bonus},
+    Deduction = {deduction},
+    TotalSalary = {total}
+WHERE UserId = '{userId.Replace("'", "''")}'";
 
             int row = da.ExecuteDMLQuery(query);
 
             if (row > 0)
             {
-                MessageBox.Show("Salary saved / updated successfully");
+                MessageBox.Show("Salary updated successfully");
                 LoadSalaryGrid();
                 ClearSalaryForm();
             }
@@ -221,6 +210,28 @@ namespace C__project.HR
         {
             CalculateTotalSalary();
     
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void label1_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox2_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+       
+
+        private void SalaryBonus_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

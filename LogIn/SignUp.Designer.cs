@@ -1,4 +1,4 @@
-﻿namespace C__project.LogIn
+namespace C__project.LogIn
 {
     partial class SignUp
     {
@@ -100,9 +100,9 @@
             this.label1.Location = new System.Drawing.Point(17, 305);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 28);
+            this.label1.Size = new System.Drawing.Size(119, 28);
             this.label1.TabIndex = 24;
-            this.label1.Text = "Name :";
+            this.label1.Text = "Full Name :";
             // 
             // pictureBox2
             // 
@@ -122,9 +122,9 @@
             this.label5.Location = new System.Drawing.Point(17, 241);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(141, 28);
+            this.label5.Size = new System.Drawing.Size(86, 28);
             this.label5.TabIndex = 20;
-            this.label5.Text = "UserID/Email:";
+            this.label5.Text = "UserID :";
             // 
             // textBox3
             // 
@@ -134,6 +134,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(319, 34);
             this.textBox3.TabIndex = 29;
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // button1
             // 

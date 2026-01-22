@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace C__project.LogIn
 {
@@ -18,13 +20,7 @@ namespace C__project.LogIn
 
             InitializeComponent();
 
-            comboBox1.Items.Clear();
-            comboBox1.Items.Add("HR Manager");
-            comboBox1.Items.Add("Employee");
-            comboBox1.Items.Add("Client");
-
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.SelectedIndex = 2;
+           
         }
 
 
@@ -32,113 +28,54 @@ namespace C__project.LogIn
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string role = comboBox1.SelectedItem?.ToString();
-            string username = textBox1.Text.Trim();
-            string password = textBox2.Text;
+            string userId = textBox1.Text.Trim();
+            string password = textBox2.Text.Trim();
 
-            if (string.IsNullOrEmpty(role))
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Please select a role first.");
-                return;
-            }
-
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                MessageBox.Show("Username and password required.");
+                MessageBox.Show("User ID and Password required");
                 return;
             }
 
             DataAccess da = new DataAccess();
-            DataTable dt;
-            string query = "";
 
-            switch (role)
+            string query = $@"
+        SELECT CreatedBy, IsEmployee
+        FROM Users
+        WHERE UserId = '{userId.Replace("'", "''")}'
+        AND Password = '{password.Replace("'", "''")}'";
+
+            DataTable dt = da.ExecuteQueryTable(query);
+
+            if (dt.Rows.Count == 1)
             {
-                
-                case "Client":
-                    {
-                        query = $@"
-                SELECT * FROM dbo.Client
-                WHERE ClientId = '{username.Replace("'", "''")}'
-                AND Password = '{password.Replace("'", "''")}'";
+                // ✅ Save session
+                Session.UserId = userId;
+                Session.CreatedBy = dt.Rows[0]["CreatedBy"].ToString();
+                Session.IsEmployee = Convert.ToBoolean(dt.Rows[0]["IsEmployee"]);
 
-                        dt = da.ExecuteQueryTable(query);
+                // ✅ Open correct dashboard
+                if (Session.CreatedBy == "HR")
+                {
+                    new Hr_Dash().Show();
+                }
+                else if (Session.IsEmployee)
+                {
+                    new Employee_Dash().Show();
+                }
+                else
+                {
+                    new Client_Dash().Show();
+                }
 
-                        if (dt.Rows.Count == 1)
-                        {
-                            Client_Dash cli = new Client_Dash();
-                            cli.Show();
-                            Log_in loginForm = this.FindForm() as Log_in;
-                            if (loginForm != null)
-                            {
-                                loginForm.Hide();
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("Invalid Client username or password");
-                        }
-                        break;
-                    }
-
-                
-                case "HR Manager":
-                    {
-                        query = $@"
-                SELECT * FROM dbo.HR
-                WHERE Username = '{username.Replace("'", "''")}'
-                AND Password = '{password.Replace("'", "''")}'";
-
-                        dt = da.ExecuteQueryTable(query);
-
-                        if (dt.Rows.Count == 1)
-                        {
-                            Hr_Dash hr = new Hr_Dash();
-                            hr.Show();
-                            Log_in loginForm = this.FindForm() as Log_in;
-                            if (loginForm != null)
-                            {
-                                loginForm.Hide();
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("Invalid HR credentials");
-                        }
-                        break;
-                    }
-
-                
-                case "Employee":
-                    {
-                        query = $@"
-    SELECT * FROM dbo.Employee
-    WHERE EmpId = '{username.Replace("'", "''")}'
-    AND Password = '{password.Replace("'", "''")}'";
-
-                        dt = da.ExecuteQueryTable(query);
-
-                        if (dt.Rows.Count == 1)
-                        {
-                            Employee_Dash emp = new Employee_Dash();
-                            emp.Show();
-                            Log_in loginForm = this.FindForm() as Log_in;
-                            if (loginForm != null)
-                            {
-                                loginForm.Hide();
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("Invalid Employee ID or Password");
-                        }
-                        break;
-                    }
-
-                default:
-                    MessageBox.Show("Invalid role selected");
-                    break;
+                // ✅ Hide login form ONCE
+                this.FindForm().Hide();
             }
+            else
+            {
+                MessageBox.Show("Invalid login");
+            }
+
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
