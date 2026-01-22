@@ -43,56 +43,63 @@ namespace C__project.Employee
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(53, 63);
+            this.label1.Location = new System.Drawing.Point(71, 78);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(68, 13);
+            this.label1.Size = new System.Drawing.Size(53, 16);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Employee Id:";
+            this.label1.Text = "User Id:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(53, 143);
+            this.label2.Location = new System.Drawing.Point(71, 176);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.Size = new System.Drawing.Size(47, 16);
             this.label2.TabIndex = 1;
             this.label2.Text = "Name:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(53, 220);
+            this.label3.Location = new System.Drawing.Point(71, 271);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(48, 13);
+            this.label3.Size = new System.Drawing.Size(61, 16);
             this.label3.TabIndex = 2;
             this.label3.Text = "Address:";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(155, 55);
+            this.textBox1.Location = new System.Drawing.Point(207, 68);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.Size = new System.Drawing.Size(132, 22);
             this.textBox1.TabIndex = 3;
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(155, 136);
+            this.textBox2.Location = new System.Drawing.Point(207, 167);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.Size = new System.Drawing.Size(132, 22);
             this.textBox2.TabIndex = 4;
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(155, 213);
+            this.textBox3.Location = new System.Drawing.Point(207, 262);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 20);
+            this.textBox3.Size = new System.Drawing.Size(132, 22);
             this.textBox3.TabIndex = 5;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(178, 406);
+            this.button1.Location = new System.Drawing.Point(237, 500);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(126, 42);
+            this.button1.Size = new System.Drawing.Size(168, 52);
             this.button1.TabIndex = 6;
             this.button1.Text = "Update";
             this.button1.UseVisualStyleBackColor = true;
@@ -100,9 +107,10 @@ namespace C__project.Employee
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(521, 417);
+            this.button2.Location = new System.Drawing.Point(695, 513);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(89, 45);
+            this.button2.Size = new System.Drawing.Size(119, 55);
             this.button2.TabIndex = 7;
             this.button2.Text = "Back";
             this.button2.UseVisualStyleBackColor = true;
@@ -111,24 +119,26 @@ namespace C__project.Employee
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(53, 301);
+            this.label4.Location = new System.Drawing.Point(71, 370);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 13);
+            this.label4.Size = new System.Drawing.Size(87, 16);
             this.label4.TabIndex = 8;
             this.label4.Text = "Date  Of Birth:";
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(155, 294);
+            this.dateTimePicker1.Location = new System.Drawing.Point(207, 362);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(265, 22);
             this.dateTimePicker1.TabIndex = 9;
             // 
             // Update_Profile
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(675, 499);
+            this.ClientSize = new System.Drawing.Size(900, 614);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button2);
@@ -139,9 +149,10 @@ namespace C__project.Employee
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Update_Profile";
             this.Text = "Update_Profile";
-            
+            this.Load += new System.EventHandler(this.Update_Profile_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

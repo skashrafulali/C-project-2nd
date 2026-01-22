@@ -28,10 +28,10 @@ namespace C__project.HR
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string description = richTextBox1.Text.Trim();
+            string noticeText = richTextBox1.Text.Trim();
             DateTime noticeDate = dateTimePicker1.Value;
 
-            if (description == "")
+            if (string.IsNullOrEmpty(noticeText))
             {
                 MessageBox.Show("Please write a notice");
                 return;
@@ -40,12 +40,13 @@ namespace C__project.HR
             DataAccess da = new DataAccess();
 
             string query = $@"
-    INSERT INTO Notice (Description, NoticeDate)
-    VALUES
-    (
-        '{description.Replace("'", "''")}',
-        '{noticeDate:yyyy-MM-dd}'
-    )";
+        INSERT INTO Notices (NoticeText, NoticeDate, CreatedBy)
+        VALUES
+        (
+            '{noticeText.Replace("'", "''")}',
+            '{noticeDate:yyyy-MM-dd}',
+            '{Session.UserId}'
+        )";
 
             int row = da.ExecuteDMLQuery(query);
 
