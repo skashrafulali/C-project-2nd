@@ -123,30 +123,35 @@ namespace C__project.Client
 
                     // 🔹 insert each item
                     string insertQuery = $@"
-                INSERT INTO Orders
-                (
-                    UserId,
-                    OrderItem,
-                    Quality,
-                    Quantity,
-                    PricePerUnit,
-                    TotalPrice,
-                    Deadline,
-                    OrderDate,
-                    Status
-                )
-                VALUES
-                (
-                    '{userId}',
-                    '{item}',
-                    '{quality}',
-                    {quantity},
-                    {pricePerUnit},
-                    {totalPrice},
-                    '{deadline:yyyy-MM-dd}',
-                    GETDATE(),
-                    'Pending'
-                )";
+INSERT INTO OfficeManagement.dbo.Orders
+(
+    UserId,
+    OrderItem,
+    Quality,
+    Quantity,
+    PricePerUnit,
+    TotalPrice,
+    Deadline,
+    OrderDate,
+    Status,
+    Payable,
+    Payment
+)
+VALUES
+(
+    '{userId}',
+    '{item.Replace("'", "''")}',
+    '{quality.Replace("'", "''")}',
+    {quantity},
+    {pricePerUnit},
+    {totalPrice},
+    '{deadline:yyyy-MM-dd}',
+    GETDATE(),
+    'Pending',
+    {totalPrice},  -- Payable starts as total
+    0              -- Payment starts 0
+)";
+
 
                     da.ExecuteDMLQuery(insertQuery);
                 }

@@ -46,8 +46,9 @@ namespace C__project.Client
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(678, 524);
+            this.dataGridView1.Size = new System.Drawing.Size(705, 524);
             this.dataGridView1.TabIndex = 0;
+            //this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // label1
             // 
@@ -66,9 +67,9 @@ namespace C__project.Client
             this.label2.Location = new System.Drawing.Point(740, 148);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 16);
+            this.label2.Size = new System.Drawing.Size(61, 16);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Client Id :";
+            this.label2.Text = "Order Id :";
             // 
             // label3
             // 
