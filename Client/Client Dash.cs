@@ -51,6 +51,7 @@ namespace C__project
             log_In.Show();
             this.FormClosing -= Client_Dash_FormClosing;
             this.Close();
+            Session.Clear();
 
         }
     }

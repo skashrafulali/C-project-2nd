@@ -1,24 +1,24 @@
-﻿using System.Data;
-using System.Data.SqlClient;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace C__project
 {
     internal class DataAccess
     {
-        private readonly string connectionString;
+        private readonly string _conString;
 
         public DataAccess()
         {
-            connectionString = ConfigurationManager
-                .ConnectionStrings["OfficeDB"]
-                .ConnectionString;
+            _conString = ConfigurationManager
+                .ConnectionStrings["OfficeDB"].ConnectionString;
         }
 
-        public DataTable ExecuteQueryTable(string sql)
+        // SELECT
+        public DataTable ExecuteQueryTable(string query)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(sql, con))
+            using (SqlConnection con = new SqlConnection(_conString))
+            using (SqlCommand cmd = new SqlCommand(query, con))
             using (SqlDataAdapter da = new SqlDataAdapter(cmd))
             {
                 DataTable dt = new DataTable();
@@ -27,13 +27,17 @@ namespace C__project
             }
         }
 
-        public int ExecuteDMLQuery(string sql)
+        // INSERT / UPDATE / DELETE
+        public int ExecuteDMLQuery(string query)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(sql, con))
+            using (SqlConnection con = new SqlConnection(
+        ConfigurationManager.ConnectionStrings["OfficeDB"].ConnectionString))
             {
-                con.Open();
-                return cmd.ExecuteNonQuery();
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    con.Open();
+                    return cmd.ExecuteNonQuery();
+                }
             }
         }
     }

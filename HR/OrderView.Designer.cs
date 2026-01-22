@@ -1,4 +1,4 @@
-﻿namespace C__project.HR
+namespace C__project.HR
 {
     partial class OrderView
     {

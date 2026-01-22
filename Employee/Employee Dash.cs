@@ -46,6 +46,7 @@ namespace C__project
                 }
 
                 this.Close();
+                Session.Clear();
             }
         }
 
