@@ -35,43 +35,31 @@ namespace C__project.Employee
         {
             try
             {
-                string empId = textBox1.Text.Trim();
+                string userId = Session.UserId;
 
-                if (string.IsNullOrWhiteSpace(empId))
-                {
-                    MessageBox.Show("Please enter Employee ID.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                string query = $@"SELECT Name, Address, DateOfBirth 
-                                FROM Employee 
-                                WHERE EmpId = '{empId.Replace("'", "''")}'";
+                string query = $@"
+        SELECT FullName, Address, DateOfBirth
+        FROM Users
+        WHERE UserId = '{userId.Replace("'", "''")}'";
 
                 DataTable dt = dataAccess.ExecuteQueryTable(query);
 
-                if (dt.Rows.Count > 0)
+                if (dt.Rows.Count == 1)
                 {
                     DataRow row = dt.Rows[0];
-                    
-                    textBox2.Text = row["Name"].ToString();
+
+                    textBox2.Text = row["FullName"].ToString();
                     textBox3.Text = row["Address"].ToString();
-                    
-                    if (DateTime.TryParse(row["DateOfBirth"].ToString(), out DateTime dob))
+
+                    if (row["DateOfBirth"] != DBNull.Value)
                     {
-                        dateTimePicker1.Value = dob;
+                        dateTimePicker1.Value = Convert.ToDateTime(row["DateOfBirth"]);
                     }
-                }
-                else
-                {
-                    MessageBox.Show("Employee ID not found. Please check the Employee ID.", 
-                                  "Employee Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    ClearForm();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading employee data: {ex.Message}", 
-                              "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error loading profile: " + ex.Message);
             }
         }
 
@@ -79,73 +67,39 @@ namespace C__project.Employee
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(textBox1.Text))
-                {
-                    MessageBox.Show("Please enter Employee ID.", "Validation Error", 
-                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    textBox1.Focus();
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(textBox2.Text))
-                {
-                    MessageBox.Show("Please enter Employee Name.", "Validation Error", 
-                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    textBox2.Focus();
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(textBox3.Text))
-                {
-                    MessageBox.Show("Please enter Employee Address.", "Validation Error", 
-                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    textBox3.Focus();
-                    return;
-                }
-
-                string empId = textBox1.Text.Trim();
+                string userId = Session.UserId;
                 string name = textBox2.Text.Trim();
                 string address = textBox3.Text.Trim();
-                string dateOfBirth = dateTimePicker1.Value.ToString("yyyy-MM-dd");
+                string dob = dateTimePicker1.Value.ToString("yyyy-MM-dd");
 
-                string checkQuery = $@"SELECT COUNT(*) FROM Employee 
-                                     WHERE EmpId = '{empId.Replace("'", "''")}'";
-
-                DataTable checkDt = dataAccess.ExecuteQueryTable(checkQuery);
-                int employeeCount = Convert.ToInt32(checkDt.Rows[0][0]);
-
-                if (employeeCount == 0)
+                if (string.IsNullOrWhiteSpace(name))
                 {
-                    MessageBox.Show("Employee ID not found. Cannot update non-existing employee.", 
-                                  "Employee Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Name required");
                     return;
                 }
 
-                string updateQuery = $@"UPDATE Employee 
-                                      SET Name = '{name.Replace("'", "''")}', 
-                                          Address = '{address.Replace("'", "''")}', 
-                                          DateOfBirth = '{dateOfBirth}'
-                                      WHERE EmpId = '{empId.Replace("'", "''")}'";
+                string updateQuery = $@"
+        UPDATE Users
+        SET 
+            FullName = '{name.Replace("'", "''")}',
+            Address = '{address.Replace("'", "''")}',
+            DateOfBirth = '{dob}'
+        WHERE UserId = '{userId.Replace("'", "''")}'";
 
-                int rowsAffected = dataAccess.ExecuteDMLQuery(updateQuery);
+                int row = dataAccess.ExecuteDMLQuery(updateQuery);
 
-                if (rowsAffected > 0)
+                if (row > 0)
                 {
-                    MessageBox.Show("Employee profile updated successfully!", 
-                                  "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
-                    ClearForm();
+                    MessageBox.Show("Profile updated successfully");
                 }
                 else
                 {
-                    MessageBox.Show("Failed to update employee profile. Please try again.", 
-                                  "Update Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Update failed");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred while updating employee profile: {ex.Message}", 
-                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
@@ -164,6 +118,12 @@ namespace C__project.Employee
             this.Close();
         }
 
-        
+        private void Update_Profile_Load(object sender, EventArgs e)
+        {
+            textBox1.Text = Session.UserId;   // UserId auto
+            textBox1.ReadOnly = true;
+
+            LoadEmployeeDetails();
+        }
     }
 }

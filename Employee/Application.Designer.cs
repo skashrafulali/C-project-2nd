@@ -42,7 +42,7 @@ namespace C__project.Employee
             // richTextBox1
             // 
             this.richTextBox1.Location = new System.Drawing.Point(16, 103);
-            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(1081, 517);
             this.richTextBox1.TabIndex = 0;
@@ -61,7 +61,7 @@ namespace C__project.Employee
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(116, 30);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(132, 22);
             this.textBox1.TabIndex = 2;
@@ -69,7 +69,7 @@ namespace C__project.Employee
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(541, 646);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(127, 48);
             this.button1.TabIndex = 3;
@@ -90,7 +90,7 @@ namespace C__project.Employee
             // textBox2
             // 
             this.textBox2.Location = new System.Drawing.Point(447, 33);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(132, 22);
             this.textBox2.TabIndex = 5;
@@ -108,7 +108,7 @@ namespace C__project.Employee
             // dateTimePicker1
             // 
             this.dateTimePicker1.Location = new System.Drawing.Point(720, 31);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(265, 22);
             this.dateTimePicker1.TabIndex = 7;
@@ -116,7 +116,7 @@ namespace C__project.Employee
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(972, 646);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(127, 48);
             this.button2.TabIndex = 8;
@@ -138,9 +138,10 @@ namespace C__project.Employee
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.richTextBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Application";
             this.Text = "Application";
+            this.Load += new System.EventHandler(this.Application_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

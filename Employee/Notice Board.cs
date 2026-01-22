@@ -27,29 +27,34 @@ namespace C__project
         {
             try
             {
-                string query = @"SELECT TOP (1000) [Description], [NoticeDate] 
-                               FROM [office management studio].[dbo].[Notice]";
+                string query = @"
+            SELECT 
+                NoticeText,
+                NoticeDate,
+                CreatedBy
+            FROM Notices
+            ORDER BY NoticeDate DESC";
 
                 DataTable noticeData = dataAccess.ExecuteQueryTable(query);
                 dataGridView1.DataSource = noticeData;
 
-                if (dataGridView1.Columns.Count > 0)
-                {
-                    dataGridView1.Columns["Description"].HeaderText = "Notice Description";
-                    dataGridView1.Columns["NoticeDate"].HeaderText = "Notice Date";
-                    
-                    dataGridView1.AutoResizeColumns();
-                    
-                    if (dataGridView1.Columns["Description"] != null)
-                    {
-                        dataGridView1.Columns["Description"].Width = 400;
-                    }
-                }
+                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dataGridView1.ReadOnly = true;
+                dataGridView1.AllowUserToAddRows = false;
+
+                // Header rename
+                dataGridView1.Columns["NoticeText"].HeaderText = "Notice";
+                dataGridView1.Columns["NoticeDate"].HeaderText = "Date";
+                dataGridView1.Columns["CreatedBy"].HeaderText = "Posted By";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading notice data: {ex.Message}", "Database Error",
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    "Error loading notices:\n" + ex.Message,
+                    "Database Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 
@@ -61,6 +66,11 @@ namespace C__project
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+        }
+
+        private void Notice_Board_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

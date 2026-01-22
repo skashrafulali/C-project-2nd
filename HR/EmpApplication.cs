@@ -26,22 +26,20 @@ namespace C__project.HR
             DataAccess da = new DataAccess();
 
             string query = @"
-    SELECT
-        EmpId,
-        EmpName,
-        AppliTXT,
-        AppDate
-    FROM Application
-    ORDER BY AppDate DESC";
+        SELECT
+            ea.ApplicationId,
+            ea.UserId      AS [Employee ID],
+            u.FullName     AS [Employee Name],
+            ea.ApplicationText AS [Application],
+            ea.ApplicationDate AS [Date],
+            ea.Status
+        FROM EmployeeApplication ea
+        INNER JOIN Users u
+            ON ea.UserId = u.UserId
+        WHERE u.IsEmployee = 1
+        ORDER BY ea.ApplicationDate DESC";
 
             dataGridView1.DataSource = da.ExecuteQueryTable(query);
-
-           
-            dataGridView1.AutoSizeColumnsMode =
-                DataGridViewAutoSizeColumnsMode.Fill;
-
-            dataGridView1.ReadOnly = true;
-            dataGridView1.AllowUserToAddRows = false;
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -50,6 +48,11 @@ namespace C__project.HR
             {
                 form.LoadControl(new welcome());
             }
+        }
+
+        private void EmpApplication_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

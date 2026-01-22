@@ -21,81 +21,60 @@ namespace C__project.Employee
             _dash = dash;
         }
 
+        private void LoadEmployeeName()
+        {
+            DataAccess da = new DataAccess();
+
+            string query = $@"
+        SELECT FullName 
+        FROM Users 
+        WHERE UserId = '{Session.UserId.Replace("'", "''")}'";
+
+            DataTable dt = da.ExecuteQueryTable(query);
+
+            if (dt.Rows.Count == 1)
+            {
+                textBox2.Text = dt.Rows[0]["FullName"].ToString();
+                textBox2.ReadOnly = true;
+            }
+        }
+
+
         private void button1_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(richTextBox1.Text))
+            {
+                MessageBox.Show("Please write your application.", "Validation",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string query = @"
+        INSERT INTO EmployeeApplication
+        (UserId, ApplicationText, ApplicationDate)
+        VALUES
+        (@UserId, @Text, @Date)";
+
             try
             {
-                
-                if (string.IsNullOrWhiteSpace(textBox1.Text))
+                using (SqlConnection con = new SqlConnection(
+                    ConfigurationManager.ConnectionStrings["OfficeDB"].ConnectionString))
+                using (SqlCommand cmd = new SqlCommand(query, con))
                 {
-                    MessageBox.Show("Please enter Employee ID.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    textBox1.Focus();
-                    return;
+                    cmd.Parameters.AddWithValue("@UserId", Session.UserId);
+                    cmd.Parameters.AddWithValue("@Text", richTextBox1.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Date", dateTimePicker1.Value.Date);
+
+                    con.Open();
+                    cmd.ExecuteNonQuery();
                 }
 
-                if (string.IsNullOrWhiteSpace(textBox2.Text))
-                {
-                    MessageBox.Show("Please enter Employee Name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    textBox2.Focus();
-                    return;
-                }
-
-                if (string.IsNullOrWhiteSpace(richTextBox1.Text))
-                {
-                    MessageBox.Show("Please enter Application Text.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    richTextBox1.Focus();
-                    return;
-                }
-
-                
-                if (!int.TryParse(textBox1.Text.Trim(), out int empId))
-                {
-                    MessageBox.Show("Employee ID must be a valid number.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    textBox1.Focus();
-                    return;
-                }
-
-                // connection string !!!!!!!!!!!!!!!!!!!!!!!
-                string connectionString = ConfigurationManager.ConnectionStrings["OfficeDB"].ConnectionString;
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-
-                    string insertQuery = @"INSERT INTO Application (EmpId, EmpName, AppliTXT, AppDate) 
-                                         VALUES (@EmpId, @EmpName, @AppliTXT, @AppDate)";
-
-                    using (SqlCommand command = new SqlCommand(insertQuery, connection))
-                    {
-
-                        command.Parameters.AddWithValue("@EmpId", empId);
-                        command.Parameters.AddWithValue("@EmpName", textBox2.Text.Trim());
-                        command.Parameters.AddWithValue("@AppliTXT", richTextBox1.Text.Trim());
-                        command.Parameters.AddWithValue("@AppDate", dateTimePicker1.Value.Date);
-
-                        int rowsAffected = command.ExecuteNonQuery();
-
-                        if (rowsAffected > 0)
-                        {
-                            MessageBox.Show("Application submitted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            
-                            
-                            ClearForm();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Failed to submit application. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                }
-            }
-            catch (SqlException sqlEx)
-            {
-                MessageBox.Show($"Database error: {sqlEx.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Application submitted successfully ✅");
+                richTextBox1.Clear();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
@@ -112,6 +91,15 @@ namespace C__project.Employee
         {
             _dash.Show();   
             this.Close();   
+        }
+
+        private void Application_Load(object sender, EventArgs e)
+        {
+            textBox1.Text = Session.UserId;
+            textBox1.ReadOnly = true;
+
+            // 🔹 Auto Full Name from Users table
+            LoadEmployeeName();
         }
     }
 }
