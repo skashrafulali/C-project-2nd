@@ -109,7 +109,7 @@ namespace C__project.Client
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(891, 586);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(173, 60);
             this.button1.TabIndex = 5;
@@ -120,7 +120,7 @@ namespace C__project.Client
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(13, 616);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(116, 42);
             this.button2.TabIndex = 6;
@@ -131,7 +131,7 @@ namespace C__project.Client
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(125, 47);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(160, 22);
             this.textBox1.TabIndex = 7;
@@ -145,7 +145,7 @@ namespace C__project.Client
             "SSD",
             "MotherBoard"});
             this.comboBox1.Location = new System.Drawing.Point(113, 176);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(160, 24);
             this.comboBox1.TabIndex = 9;
@@ -153,7 +153,7 @@ namespace C__project.Client
             // dateTimePicker1
             // 
             this.dateTimePicker1.Location = new System.Drawing.Point(544, 32);
-            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(4);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(265, 22);
             this.dateTimePicker1.TabIndex = 10;
@@ -166,7 +166,7 @@ namespace C__project.Client
             "B grade",
             "C grade"});
             this.comboBox2.Location = new System.Drawing.Point(401, 186);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(160, 24);
             this.comboBox2.TabIndex = 11;
@@ -205,7 +205,7 @@ namespace C__project.Client
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(864, 299);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(153, 48);
             this.button3.TabIndex = 15;
@@ -216,7 +216,7 @@ namespace C__project.Client
             // textBox3
             // 
             this.textBox3.Location = new System.Drawing.Point(887, 100);
-            this.textBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(4);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(132, 22);
             this.textBox3.TabIndex = 16;
@@ -225,7 +225,7 @@ namespace C__project.Client
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(884, 188);
-            this.textBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(4);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(132, 22);
             this.textBox4.TabIndex = 17;
@@ -260,7 +260,7 @@ namespace C__project.Client
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(136, 48);
             this.button4.TabIndex = 18;
-            this.button4.Text = "button4";
+            this.button4.Text = "Add";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -300,7 +300,7 @@ namespace C__project.Client
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Make_Order";
             this.Text = "Make_Order";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Make_Order_FormClosing);

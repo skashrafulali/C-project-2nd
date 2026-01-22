@@ -123,30 +123,35 @@ namespace C__project.Client
 
                     // 🔹 insert each item
                     string insertQuery = $@"
-                INSERT INTO Orders
-                (
-                    UserId,
-                    OrderItem,
-                    Quality,
-                    Quantity,
-                    PricePerUnit,
-                    TotalPrice,
-                    Deadline,
-                    OrderDate,
-                    Status
-                )
-                VALUES
-                (
-                    '{userId}',
-                    '{item}',
-                    '{quality}',
-                    {quantity},
-                    {pricePerUnit},
-                    {totalPrice},
-                    '{deadline:yyyy-MM-dd}',
-                    GETDATE(),
-                    'Pending'
-                )";
+INSERT INTO OfficeManagement.dbo.Orders
+(
+    UserId,
+    OrderItem,
+    Quality,
+    Quantity,
+    PricePerUnit,
+    TotalPrice,
+    Deadline,
+    OrderDate,
+    Status,
+    Payable,
+    Payment
+)
+VALUES
+(
+    '{userId}',
+    '{item.Replace("'", "''")}',
+    '{quality.Replace("'", "''")}',
+    {quantity},
+    {pricePerUnit},
+    {totalPrice},
+    '{deadline:yyyy-MM-dd}',
+    GETDATE(),
+    'Pending',
+    {totalPrice},  -- Payable starts as total
+    0              -- Payment starts 0
+)";
+
 
                     da.ExecuteDMLQuery(insertQuery);
                 }
@@ -234,110 +239,102 @@ namespace C__project.Client
             return true;
         }
 
-        private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+       private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+{
+    try
+    {
+        Graphics g = e.Graphics;
+
+        Font titleFont = new Font("Arial", 18, FontStyle.Bold);
+        Font headerFont = new Font("Arial", 14, FontStyle.Bold);
+        Font normalFont = new Font("Arial", 12, FontStyle.Regular);
+
+        float y = 50;
+        float left = 80;
+        float right = 750;
+
+        // ✅ Company header
+        g.DrawString("Blah Blah company ltd", titleFont, Brushes.Black, left, y);
+        y += 35;
+        g.DrawString("Invoice", headerFont, Brushes.Black, left, y);
+        y += 25;
+
+        g.DrawLine(Pens.Black, left, y, right, y);
+        y += 20;
+
+        // ✅ Info
+        g.DrawString("Bill Date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), normalFont, Brushes.Black, left, y);
+        y += 20;
+        g.DrawString("Client ID: " + Session.UserId, normalFont, Brushes.Black, left, y);
+        y += 20;
+        g.DrawString("Delivery Deadline: " + dateTimePicker1.Value.ToShortDateString(), normalFont, Brushes.Black, left, y);
+        y += 30;
+
+        // ✅ Table header
+        g.DrawString("Item", normalFont, Brushes.Black, left, y);
+        g.DrawString("Quality", normalFont, Brushes.Black, left + 170, y);
+        g.DrawString("Qty", normalFont, Brushes.Black, left + 320, y);
+        g.DrawString("Unit (Tk)", normalFont, Brushes.Black, left + 400, y);
+        g.DrawString("Total (Tk)", normalFont, Brushes.Black, left + 540, y);
+        y += 18;
+
+        g.DrawLine(Pens.Black, left, y, right, y);
+        y += 10;
+
+        // ✅ Print all rows from DataGridView
+        decimal grandTotal = 0;
+
+        foreach (DataGridViewRow row in dataGridView1.Rows)
         {
-            try
+            if (row.IsNewRow) continue;
+
+            string item = row.Cells["OrderItem"].Value?.ToString() ?? "";
+            string quality = row.Cells["Quality"].Value?.ToString() ?? "";
+            string qty = row.Cells["Quantity"].Value?.ToString() ?? "0";
+
+            decimal unit = Convert.ToDecimal(row.Cells["PricePerUnit"].Value);
+            decimal total = Convert.ToDecimal(row.Cells["TotalPrice"].Value);
+
+            grandTotal += total;
+
+            g.DrawString(item, normalFont, Brushes.Black, left, y);
+            g.DrawString(quality, normalFont, Brushes.Black, left + 170, y);
+            g.DrawString(qty, normalFont, Brushes.Black, left + 320, y);
+            g.DrawString("Tk " + unit.ToString("F2"), normalFont, Brushes.Black, left + 400, y);
+            g.DrawString("Tk " + total.ToString("F2"), normalFont, Brushes.Black, left + 540, y);
+
+            y += 20;
+
+            // Simple page overflow protection
+            if (y > e.MarginBounds.Bottom - 120)
             {
-                Graphics graphics = e.Graphics;
-                Font titleFont = new Font("Arial", 18, FontStyle.Bold);
-                Font headerFont = new Font("Arial", 14, FontStyle.Bold);
-                Font normalFont = new Font("Arial", 12, FontStyle.Regular);
-                Font smallFont = new Font("Arial", 10, FontStyle.Regular);
-
-                float yPos = 50;
-                float leftMargin = 100;
-                float rightMargin = 700;
-
-                
-                graphics.DrawString("ABC COMPANY PRIVATE LIMITED", titleFont, Brushes.Black, leftMargin, yPos);
-                yPos += 40;
-                graphics.DrawString("Order Bill Slip", headerFont, Brushes.Black, leftMargin, yPos);
-                yPos += 30;
-
-                // Draw line separator
-                graphics.DrawLine(new Pen(Color.Black, 2), leftMargin, yPos, rightMargin, yPos);
-                yPos += 30;
-
-                // Bill Information
-                graphics.DrawString("Bill Date: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), normalFont, Brushes.Black, leftMargin, yPos);
-                yPos += 25;
-                graphics.DrawString("Client ID: " + textBox1.Text, normalFont, Brushes.Black, leftMargin, yPos);
-                yPos += 25;
-                graphics.DrawString("Order Date: " + DateTime.Now.ToShortDateString(), normalFont, Brushes.Black, leftMargin, yPos);
-                yPos += 25;
-                graphics.DrawString("Delivery Deadline: " + dateTimePicker1.Value.ToShortDateString(), normalFont, Brushes.Black, leftMargin, yPos);
-                yPos += 40;
-
-                // Product Details Header
-                graphics.DrawString("PRODUCT DETAILS", headerFont, Brushes.Black, leftMargin, yPos);
-                yPos += 30;
-
-                // Table headers
-                graphics.DrawString("Item", normalFont, Brushes.Black, leftMargin, yPos);
-                graphics.DrawString("Quality", normalFont, Brushes.Black, leftMargin + 150, yPos);
-                graphics.DrawString("Quantity", normalFont, Brushes.Black, leftMargin + 250, yPos);
-                graphics.DrawString("Unit Price", normalFont, Brushes.Black, leftMargin + 350, yPos);
-                graphics.DrawString("Total Price", normalFont, Brushes.Black, leftMargin + 450, yPos);
-                yPos += 25;
-
-                // Draw line under headers
-                graphics.DrawLine(new Pen(Color.Black, 1), leftMargin, yPos, rightMargin - 50, yPos);
-                yPos += 20;
-
-                // Product data
-                graphics.DrawString(comboBox1.SelectedItem.ToString(), normalFont, Brushes.Black, leftMargin, yPos);
-                graphics.DrawString(comboBox2.SelectedItem.ToString(), normalFont, Brushes.Black, leftMargin + 150, yPos);
-                graphics.DrawString(textBox2.Text, normalFont, Brushes.Black, leftMargin + 250, yPos);
-                graphics.DrawString("$" + textBox3.Text, normalFont, Brushes.Black, leftMargin + 350, yPos);
-                graphics.DrawString("$" + textBox4.Text, normalFont, Brushes.Black, leftMargin + 450, yPos);
-                yPos += 30;
-
-
-                // Draw line under product data
-                graphics.DrawLine(new Pen(Color.Black, 1), leftMargin, yPos, rightMargin - 50, yPos);
-                yPos += 30;
-
-                // Price Summary
-                graphics.DrawString("PRICE SUMMARY", headerFont, Brushes.Black, leftMargin, yPos);
-                yPos += 30;
-
-                graphics.DrawString("Subtotal:", normalFont, Brushes.Black, leftMargin + 300, yPos);
-                graphics.DrawString("$" + textBox4.Text, normalFont, Brushes.Black, leftMargin + 450, yPos);
-                yPos += 25;
-
-                // Calculate tax (assuming 10% tax)
-                decimal subtotal = decimal.Parse(textBox4.Text);
-                decimal tax = subtotal * 0.10m;
-                decimal finalTotal = subtotal + tax;
-
-                graphics.DrawString("Tax (10%):", normalFont, Brushes.Black, leftMargin + 300, yPos);
-                graphics.DrawString("$" + tax.ToString("F2"), normalFont, Brushes.Black, leftMargin + 450, yPos);
-                yPos += 25;
-
-                // Draw line before total
-                graphics.DrawLine(new Pen(Color.Black, 2), leftMargin + 300, yPos, rightMargin - 50, yPos);
-                yPos += 15;
-
-                graphics.DrawString("TOTAL AMOUNT:", headerFont, Brushes.Black, leftMargin + 300, yPos);
-                graphics.DrawString("$" + finalTotal.ToString("F2"), headerFont, Brushes.Black, leftMargin + 450, yPos);
-                yPos += 50;
-
-                // Footer
-                graphics.DrawString("Thank you for your business!", normalFont, Brushes.Black, leftMargin, yPos);
-                yPos += 20;
-                graphics.DrawString("For any queries, please contact our support team.", smallFont, Brushes.Gray, leftMargin, yPos);
-
-                // Cleanup fonts
-                titleFont.Dispose();
-                headerFont.Dispose();
-                normalFont.Dispose();
-                smallFont.Dispose();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error during printing: {ex.Message}", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                e.HasMorePages = true;
+                return;
             }
         }
+
+        y += 10;
+        g.DrawLine(Pens.Black, left, y, right, y);
+        y += 20;
+
+        // ✅ Summary (no tax unless you want)
+        g.DrawString("Grand Total:", headerFont, Brushes.Black, left + 350, y);
+        g.DrawString("Tk " + grandTotal.ToString("F2"), headerFont, Brushes.Black, left + 540, y);
+        y += 40;
+
+        g.DrawString("Thank you for your business!", normalFont, Brushes.Black, left, y);
+
+        titleFont.Dispose();
+        headerFont.Dispose();
+        normalFont.Dispose();
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show("Error during printing: " + ex.Message, "Print Error",
+            MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
+
 
         private void Make_Order_Load(object sender, EventArgs e)
         {

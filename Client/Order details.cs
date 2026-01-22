@@ -44,13 +44,17 @@ namespace C__project.Client
 
                 DataTable orderData = dataAccess.ExecuteQueryTable(query);
                 dataGridView1.DataSource = orderData;
+
+                // optional: make it look nicer
+                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading order details: {ex.Message}", "Database Error",
+                MessageBox.Show("Error loading order details: " + ex.Message, "Database Error",
                               MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {

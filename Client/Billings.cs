@@ -24,141 +24,106 @@ namespace C__project.Client
         {
             try
             {
-                string query = @"SELECT 
-                                    mo.[Client Id],
-                                    mo.[Order item], 
-                                    mo.[Total price],
-                                    ISNULL(b.[Payable], mo.[Total price]) AS [Payable]
-                                FROM [office management studio].[dbo].[Make Order] mo
-                                LEFT JOIN [office management studio].[dbo].[Billings] b 
-                                ON mo.[Client Id] = b.[Client Id]";
-                
-                DataTable orderData = dataAccess.ExecuteQueryTable(query);
-                dataGridView1.DataSource = orderData;
+                string query = @"
+            SELECT
+                OrderId,
+                UserId,
+                OrderItem,
+                Quality,
+                Quantity,
+                TotalPrice,
+                ISNULL(Payable, TotalPrice) AS Payable,
+                ISNULL(Payment, 0) AS Payment,
+                PaymentDate,
+                Status,
+                OrderDate,
+                Deadline
+            FROM OfficeManagement.dbo.Orders
+            ORDER BY OrderId DESC";
+
+                DataTable dt = dataAccess.ExecuteQueryTable(query);
+                dataGridView1.DataSource = dt;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading order details: {ex.Message}", "Database Error", 
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error loading orders: " + ex.Message);
             }
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
             try
             {
-                
-                if (string.IsNullOrWhiteSpace(textBox1.Text))
+                // OrderId must be number
+                if (!int.TryParse(textBox1.Text.Trim(), out int orderId))
                 {
-                    MessageBox.Show("Please enter Client ID.", "Validation Error", 
-                                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please enter a valid Order ID (number).");
                     return;
                 }
 
-                
-                if (string.IsNullOrWhiteSpace(textBox2.Text) || 
-                    !decimal.TryParse(textBox2.Text, out decimal paymentAmount) || 
-                    paymentAmount <= 0)
+                // Payment must be > 0
+                if (!decimal.TryParse(textBox2.Text.Trim(), out decimal payNow) || payNow <= 0)
                 {
-                    MessageBox.Show("Please enter a valid payment amount (positive number).", 
-                                  "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Please enter a valid payment amount.");
                     return;
                 }
 
-                string clientId = textBox1.Text;
+                // Get TotalPrice and current Payment
+                string getQuery = $@"
+            SELECT TotalPrice, ISNULL(Payment,0) AS Payment
+            FROM OfficeManagement.dbo.Orders
+            WHERE OrderId = {orderId}";
 
-                
-                string getTotalPriceQuery = @"SELECT [Total price] 
-                                            FROM [office management studio].[dbo].[Make Order] 
-                                            WHERE [Client Id] = '" + clientId.Replace("'", "''") + "'";
+                DataTable dt = dataAccess.ExecuteQueryTable(getQuery);
 
-                DataTable orderData = dataAccess.ExecuteQueryTable(getTotalPriceQuery);
-
-                if (orderData.Rows.Count == 0)
+                if (dt.Rows.Count == 0)
                 {
-                    MessageBox.Show("No order found for this Client ID.", "Not Found", 
-                                  MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No order found with this Order ID.");
                     return;
                 }
 
-                decimal totalPrice = Convert.ToDecimal(orderData.Rows[0]["Total price"]);
+                decimal totalPrice = Convert.ToDecimal(dt.Rows[0]["TotalPrice"]);
+                decimal oldPayment = Convert.ToDecimal(dt.Rows[0]["Payment"]);
 
-                
-                string checkBillingQuery = @"SELECT [Payment], [Payable] 
-                                           FROM [office management studio].[dbo].[Billings] 
-                                           WHERE [Client Id] = '" + clientId.Replace("'", "''") + "'";
+                decimal newPayment = oldPayment + payNow;
+                decimal newPayable = totalPrice - newPayment;
 
-                DataTable billingData = dataAccess.ExecuteQueryTable(checkBillingQuery);
-
-                decimal currentPayment = 0;
-                decimal currentPayable = totalPrice;
-
-                if (billingData.Rows.Count > 0)
+                // Prevent overpayment
+                if (newPayable < 0)
                 {
-                    
-                    currentPayment = Convert.ToDecimal(billingData.Rows[0]["Payment"]);
-                    decimal newPayment = currentPayment + paymentAmount;
-                    decimal newPayable = totalPrice - newPayment;
-
-                    
-                    if (newPayable < 0)
-                    {
-                        MessageBox.Show($"Payment amount exceeds remaining balance. Maximum payable amount is ${totalPrice - currentPayment:F2}", 
-                                      "Payment Exceeds Balance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    string updateQuery = $@"UPDATE [office management studio].[dbo].[Billings] 
-                                          SET [Payment] = {newPayment}, [Payable] = {newPayable} 
-                                          WHERE [Client Id] = '{clientId.Replace("'", "''")}'";
-
-                    int rowsAffected = dataAccess.ExecuteDMLQuery(updateQuery);
-
-                    if (rowsAffected > 0)
-                    {
-                        MessageBox.Show($"Payment updated successfully!\nTotal Payment: ${newPayment:F2}\nRemaining Payable: ${newPayable:F2}", 
-                                      "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
+                    decimal maxPay = totalPrice - oldPayment;
+                    MessageBox.Show($"Payment exceeds remaining balance. Max you can pay: {maxPay:F2}");
+                    return;
                 }
+
+                // Update Orders
+                string updateQuery = $@"
+            UPDATE OfficeManagement.dbo.Orders
+            SET
+                Payment = {newPayment},
+                Payable = {newPayable},
+                PaymentDate = GETDATE(),
+                Status = CASE WHEN {newPayable} = 0 THEN 'Paid' ELSE Status END
+            WHERE OrderId = {orderId}";
+
+                int rows = dataAccess.ExecuteDMLQuery(updateQuery);
+
+                if (rows > 0)
+                    MessageBox.Show($"Payment updated!\nTotal Paid: {newPayment:F2}\nRemaining Payable: {newPayable:F2}");
                 else
-                {
-                    // Create new billing record
-                    decimal newPayable = totalPrice - paymentAmount;
+                    MessageBox.Show("Update failed.");
 
-                    
-                    if (newPayable < 0)
-                    {
-                        MessageBox.Show($"Payment amount exceeds total order amount. Maximum payable amount is ${totalPrice:F2}", 
-                                      "Payment Exceeds Total", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    string insertQuery = $@"INSERT INTO [office management studio].[dbo].[Billings] 
-                                          ([Client Id], [Payment], [Payable]) 
-                                          VALUES ('{clientId.Replace("'", "''")}', {paymentAmount}, {newPayable})";
-
-                    int rowsAffected = dataAccess.ExecuteDMLQuery(insertQuery);
-
-                    if (rowsAffected > 0)
-                    {
-                        MessageBox.Show($"Payment recorded successfully!\nTotal Payment: ${paymentAmount:F2}\nRemaining Payable: ${newPayable:F2}", 
-                                      "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-
-                
-                textBox1.Text = "";
-                textBox2.Text = "";
+                textBox1.Clear();
+                textBox2.Clear();
                 LoadOrderDetails();
-
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error processing payment: {ex.Message}", "Database Error", 
-                              MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error processing payment: " + ex.Message);
             }
         }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -171,5 +136,14 @@ namespace C__project.Client
         {
             Application.Exit();
         }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                textBox1.Text = dataGridView1.Rows[e.RowIndex].Cells["OrderId"].Value.ToString();
+            }
+        }
+
     }
 }
